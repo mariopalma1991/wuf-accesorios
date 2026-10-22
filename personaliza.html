@@ -210,7 +210,8 @@ button{font-family:inherit;cursor:pointer}
 <label for="dir" style="font-weight: 700; font-size: 16px">Escribe tu dirección y calculamos tu zona</label>
 <div style="display: flex; flex-wrap: wrap; gap: 8px">
 <div style="position: relative; flex: 1 1 200px; min-width: 0">
-<input id="dir" type="text" autocomplete="off" role="combobox" aria-expanded="{{sugOpen}}" aria-controls="sugs" value="{{addr}}" onInput="{{onAddr}}" onKeyDown="{{onKey}}" placeholder="Calle, número y colonia" style="width: 100%; min-height: 48px; box-sizing: border-box; border: 2px solid #28314D; border-radius: 14px; padding: 8px 14px; font: inherit; font-weight: 700; font-size: 16px; color: #28314D; background: #FFF9F0">
+<input id="dir" type="text" autocomplete="off" role="combobox" aria-expanded="{{sugOpen}}" aria-controls="sugs" value="{{addr}}" onInput="{{onAddr}}" onKeyDown="{{onKey}}" placeholder="Calle, número y colonia" style="width: 100%; min-height: 48px; box-sizing: border-box; border: 2px solid #28314D; border-radius: 14px; padding: 8px 46px 8px 14px; font: inherit; font-weight: 700; font-size: 16px; color: #28314D; background: #FFF9F0">
+<sc-if value="{{hasAddr}}" hint-placeholder-val="{{ false }}"><button id="clrDir" type="button" aria-label="Borrar dirección" onClick="{{onClear}}" style="position: absolute; right: 8px; top: 12px; width: 28px; height: 28px; border-radius: 50%; border: 0; background: #28314D; color: #FFF9F0; font-size: 18px; line-height: 1; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0">×</button></sc-if>
 <sc-if value="{{hasSugs}}" hint-placeholder-val="{{ false }}">
 <ul id="sugs" role="listbox" style="position: absolute; z-index: 1000; left: 0; right: 0; top: calc(100% + 6px); margin: 0; padding: 6px; list-style: none; background: #FFFFFF; border: 2px solid #28314D; border-radius: 16px; box-shadow: 0 14px 30px -12px rgba(40,49,77,.4); max-height: 280px; overflow: auto">
 <sc-for list="{{sugs}}" as="g" hint-placeholder-count="4">
@@ -333,6 +334,13 @@ class Component extends DCLogic {
     clearTimeout(this._sugT);
     if (v.trim().length < 4) return;
     this._sugT = setTimeout(function () { self.fetchSugs(v.trim()); }, 450);
+  }
+  onClear() {
+    clearTimeout(this._sugT); this._sugSeq = (this._sugSeq || 0) + 1;
+    if (this._pin) { this._pin.remove(); this._pin = null; this._pinKey = null; }
+    if (this._map && window.L) this._map.setView(this.geoOrigin(), 12);
+    this.setState({ addr: '', sugs: [], point: null, zone: null, geoMsg: '', searching: false, copied: '' });
+    var d = document.getElementById('dir'); if (d) d.focus();
   }
   onKey(e) {
     if (e.key === 'Enter') { e.preventDefault(); var g = this.state.sugs[0]; if (g) this.pickSug(g); else this.onSearch(); }
@@ -601,7 +609,7 @@ class Component extends DCLogic {
       placaLabel: 'Placa de hueso azul grabada con ' + placaText,
       placaCardNote: st.placa ? 'Incluida en tu pedido. Se dona al 100% a Vida Animal CUU.' : 'Agrégala en el paso 4 por $180. Se dona al 100% a Vida Animal CUU.',
       placaSummary: st.placa ? 'Sí, +$' + PLACA : 'Sin placa',
-      totalLabel: '$' + total + ' MXN', zones: zones, shipSummary: shipSummary, addr: st.addr, geoMsg: st.geoMsg, waHref: 'https://wa.me/526144879916?text=' + encodeURIComponent(summary), hasSugs: st.sugs.length > 0, sugOpen: st.sugs.length > 0 ? 'true' : 'false', onKey: function (e) { self.onKey(e); }, sugs: st.sugs.map(function (g) { return { main: g.main, sub: g.sub, pick: function () { self.pickSug(g); } }; }), searchLabel: st.searching ? 'Buscando…' : 'Calcular zona', onAddr: function (e) { self.onAddr(e); }, onSearch: function () { self.onSearch(); }, ring1: rings.ring1, ring2: rings.ring2, ring3: rings.ring3, ring4: rings.ring4,
+      totalLabel: '$' + total + ' MXN', zones: zones, shipSummary: shipSummary, addr: st.addr, hasAddr: !!(st.addr && st.addr.length), geoMsg: st.geoMsg, waHref: 'https://wa.me/526144879916?text=' + encodeURIComponent(summary), hasSugs: st.sugs.length > 0, sugOpen: st.sugs.length > 0 ? 'true' : 'false', onKey: function (e) { self.onKey(e); }, sugs: st.sugs.map(function (g) { return { main: g.main, sub: g.sub, pick: function () { self.pickSug(g); } }; }), searchLabel: st.searching ? 'Buscando…' : 'Calcular zona', onAddr: function (e) { self.onAddr(e); }, onClear: function () { self.onClear(); }, onSearch: function () { self.onSearch(); }, ring1: rings.ring1, ring2: rings.ring2, ring3: rings.ring3, ring4: rings.ring4,
       priceBreakdown: (isCustom ? (cur[2] ? 'Collar medida especial $' + cur[2] : 'Collar: escribe su medida') : 'Collar talla ' + cur[0] + ' $' + cur[2]) + (nLet ? ' + ' + nLet + (nLet === 1 ? ' letra' : ' letras') + ' $' + letCost : '') + (st.placa ? ' + plaquita solidaria $' + PLACA : '') + (zSel ? (ship ? ' + envío $' + ship : ' + envío por confirmar') : ' + envío según zona') + '. Precios en pesos mexicanos.',
       placaHint: st.placa ? (pet ? 'Así se verá la placa con su nombre grabado:' : 'Escribe su nombre en el paso 2 para verlo en la placa.') : 'Placa de hueso con su nombre grabado, $180 MXN adicionales al collar.',
       onClientName: function (e) { self.setState({ clientName: e.target.value, copied: '' }); },
