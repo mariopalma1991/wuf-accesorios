@@ -76,6 +76,7 @@ button{font-family:inherit;cursor:pointer}
 <span style="display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; border-radius: 999px; padding: 6px 12px 6px 6px; font-size: 14px; line-height: 18px; font-weight: 700"><span class="wsw" aria-hidden="true" style="width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid rgba(40,49,77,.25); {{swB}}"></span>Contraste: {{colorB}}</span>
 </div>
 <p style="margin: 0; padding: 0 6px 4px; font-size: 14px; line-height: 20px; color: #4A5270">{{previewNote}}</p>
+<sc-if value="{{placa}}" hint-placeholder-val="{{ false }}">
 <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; background: #FFFFFF; border-radius: 22px; padding: 14px">
 <div role="img" aria-label="{{placaLabel}}" style="position: relative; flex: 0 1 260px; min-width: 180px; aspect-ratio: 510 / 410; border-radius: 16px; overflow: hidden; container-type: inline-size; isolation: isolate; background: #6B3A1E">
 <img src="assets/img/placa_base.jpg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block">
@@ -89,6 +90,7 @@ button{font-family:inherit;cursor:pointer}
 <span style="font-size: 14px; line-height: 20px; color: #4A5270">{{placaCardNote}}</span>
 </div>
 </div>
+</sc-if>
 </div>
 <!-- 2 COLORES -->
 <fieldset style="margin: 0; border: 2px solid #EFE4D4; background: #FFFFFF; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
