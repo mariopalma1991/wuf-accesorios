@@ -11,6 +11,7 @@
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#FF6B85">
 <link rel="icon" href="assets/img/logo.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;family=Arimo:wght@700&amp;display=swap" rel="stylesheet">
 <style>
@@ -185,20 +186,15 @@ button{font-family:inherit;cursor:pointer}
 <legend style="padding: 0 8px; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 22px; line-height: 26px"><span style="display: inline-flex; width: 30px; height: 30px; border-radius: 10px; background: #A58BE7; align-items: center; justify-content: center; font-size: 17px; margin-right: 8px">5</span>Envío por zonas</legend>
 <p style="margin: 0; font-size: 15px; line-height: 22px">Salimos desde la zona UACH Norte, en Chihuahua capital. Por ahora enviamos dentro de la ciudad y el costo depende de tu zona.</p>
 <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px">
-<div aria-hidden="true" style="position: relative; flex: 0 1 240px; min-width: 200px; aspect-ratio: 1 / 1; margin: 0 auto">
-<div style="position: absolute; inset: 0; border-radius: 50%; background: {{ring4}}; border: 2px dashed rgba(40,49,77,.25); transition: background .2s ease"></div>
-<div style="position: absolute; inset: 11%; border-radius: 50%; background: {{ring3}}; border: 2px dashed rgba(40,49,77,.25); transition: background .2s ease"></div>
-<div style="position: absolute; inset: 22%; border-radius: 50%; background: {{ring2}}; border: 2px dashed rgba(40,49,77,.25); transition: background .2s ease"></div>
-<div style="position: absolute; inset: 33%; border-radius: 50%; background: {{ring1}}; border: 2px dashed rgba(40,49,77,.25); transition: background .2s ease"></div>
-<span style="position: absolute; left: 50%; top: 5.5%; transform: translate(-50%, -50%); font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 16px; line-height: 1">4</span>
-<span style="position: absolute; left: 50%; top: 16.5%; transform: translate(-50%, -50%); font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 16px; line-height: 1">3</span>
-<span style="position: absolute; left: 50%; top: 27.5%; transform: translate(-50%, -50%); font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 16px; line-height: 1">2</span>
-<span style="position: absolute; left: 50%; top: 38.5%; transform: translate(-50%, -50%); font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 16px; line-height: 1">1</span>
-<div style="position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 2px">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="#28314D" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12Z"></path><circle cx="12" cy="10" r="2.5" fill="#FFFFFF" stroke="none"></circle></svg>
-<span style="background: #28314D; color: #FFF9F0; border-radius: 999px; padding: 2px 8px; font-size: 11px; line-height: 14px; font-weight: 800; white-space: nowrap">UACH Norte</span>
+<div style="flex: 1 1 100%; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<label for="dir" style="font-weight: 700; font-size: 16px">Escribe tu dirección y calculamos tu zona</label>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<input id="dir" type="text" autocomplete="street-address" value="{{addr}}" onInput="{{onAddr}}" placeholder="Calle, número y colonia" style="flex: 1 1 200px; min-width: 0; min-height: 48px; box-sizing: border-box; border: 2px solid #28314D; border-radius: 14px; padding: 8px 14px; font: inherit; font-weight: 700; font-size: 16px; color: #28314D; background: #FFF9F0">
+<button class="wbtn" type="button" onClick="{{onSearch}}" style="min-height: 48px; border-radius: 999px; border: 0; background: #28314D; color: #FFF9F0; padding: 10px 20px; font-weight: 800; font-size: 16px">{{searchLabel}}</button>
 </div>
-<div style="position: absolute; right: 2%; top: 2%; width: 30px; height: 30px; border-radius: 50%; background: #FFFFFF; border: 2px solid #28314D; display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 14px">N</div>
+<span style="font-size: 14px; line-height: 20px; font-weight: 700; min-height: 20px">{{geoMsg}}</span>
+<div id="mapSlot" style="width: 100%; height: clamp(260px, 52vw, 360px); border-radius: 18px; overflow: hidden; background: #EEE8FB; border: 2px solid #EFE4D4"></div>
+<span style="font-size: 13px; line-height: 18px; color: #5B6380">También puedes tocar el mapa para marcar tu ubicación. Tu dirección solo se usa para calcular la zona y no se guarda. Mapa © OpenStreetMap.</span>
 </div>
 <div style="flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
 <sc-for list="{{zones}}" as="z" hint-placeholder-count="4">
@@ -261,17 +257,70 @@ button{font-family:inherit;cursor:pointer}
 </footer>
 </div>
 </template>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="assets/js/runtime.js"></script>
 <script src="assets/js/inventario.js"></script>
 <script>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { inv: null, style: null, size: 'M', custom: '', a: 'Lila', b: 'Rosa pastel', target: 'a', keychain: false, petName: '', placa: false, zone: null, copied: '' };
+    this.state = { inv: null, style: null, size: 'M', custom: '', a: 'Lila', b: 'Rosa pastel', target: 'a', keychain: false, petName: '', placa: false, zone: null, copied: '', addr: '', point: null, geoMsg: '', searching: false };
   }
   componentDidMount() {
     var self = this;
     if (window.loadInventario) window.loadInventario().then(function (inv) { self.setState({ inv: inv }); }, function (e) { console.warn('Inventario: se usa la lista de respaldo.', e); });
+  }
+  geoOrigin() { return this.props.origen || [28.7117, -106.1397]; }
+  kmTo(lat, lon) {
+    var o = this.geoOrigin(), R = 6371, r = Math.PI / 180;
+    var dLat = (lat - o[0]) * r, dLon = (lon - o[1]) * r;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(o[0] * r) * Math.cos(lat * r) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    return 2 * R * Math.asin(Math.sqrt(a));
+  }
+  setPoint(lat, lon, msgPrefix) {
+    var km = this.kmTo(lat, lon);
+    var zone = km <= 3 ? 'z1' : km <= 6 ? 'z2' : km <= 10 ? 'z3' : 'z4';
+    var n = zone.slice(1);
+    this.setState({ point: [lat, lon, km], zone: zone, copied: '', searching: false,
+      geoMsg: (msgPrefix || 'Tu ubicación') + ' está a unos ' + km.toFixed(1) + ' km de UACH Norte: Zona ' + n + '.' });
+  }
+  onAddr(e) { this.setState({ addr: e.target.value }); }
+  onSearch() {
+    var self = this, q = String(this.state.addr || '').trim();
+    if (q.length < 4) { this.setState({ geoMsg: 'Escribe tu calle, número y colonia.' }); return; }
+    this.setState({ searching: true, geoMsg: 'Buscando…' });
+    var url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=mx&accept-language=es' +
+      '&viewbox=-106.40,28.85,-105.85,28.45&bounded=1&q=' + encodeURIComponent(q + ', Chihuahua, Chihuahua');
+    fetch(url).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (res) {
+      if (!res || !res.length) { self.setState({ searching: false, geoMsg: 'No encontramos esa dirección. Toca tu ubicación en el mapa o elige tu zona abajo.' }); return; }
+      self.setPoint(parseFloat(res[0].lat), parseFloat(res[0].lon), 'Tu dirección');
+    }).catch(function () { self.setState({ searching: false, geoMsg: 'No pudimos buscar la dirección. Toca tu ubicación en el mapa o elige tu zona abajo.' }); });
+  }
+  afterRender() {
+    var self = this, slot = document.getElementById('mapSlot');
+    if (!slot) return;
+    if (!window.L) { slot.style.display = 'none'; return; }
+    if (!this._map) {
+      var el = this._mapEl = document.createElement('div');
+      el.style.cssText = 'width:100%;height:100%';
+      var o = this.geoOrigin(), L = window.L;
+      var map = this._map = L.map(el, { scrollWheelZoom: false }).setView(o, 12);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map);
+      var cols = ['#75D6C0', '#FFCF46', '#A58BE7'];
+      [10, 6, 3].forEach(function (km, i) {
+        L.circle(o, { radius: km * 1000, color: cols[2 - i], weight: 2, fillColor: cols[2 - i], fillOpacity: 0.18 }).addTo(map);
+      });
+      L.circleMarker(o, { radius: 8, color: '#FFFFFF', weight: 3, fillColor: '#28314D', fillOpacity: 1 }).bindTooltip('UACH Norte', { permanent: true, direction: 'top', offset: [0, -8] }).addTo(map);
+      map.on('click', function (ev) { self.setPoint(ev.latlng.lat, ev.latlng.lng, 'El punto que marcaste'); });
+    }
+    if (this._mapEl.parentNode !== slot) slot.appendChild(this._mapEl);
+    var L2 = window.L, p = this.state.point;
+    if (p) {
+      if (!this._pin) this._pin = L2.circleMarker([p[0], p[1]], { radius: 9, color: '#FFFFFF', weight: 3, fillColor: '#FF6B85', fillOpacity: 1 }).addTo(this._map);
+      else this._pin.setLatLng([p[0], p[1]]);
+      if (this._pinKey !== p[0] + ',' + p[1]) { this._pinKey = p[0] + ',' + p[1]; this._map.fitBounds(L2.latLngBounds([p[0], p[1]], this.geoOrigin()).pad(0.4), { maxZoom: 15 }); }
+    }
+    this._map.invalidateSize();
   }
   renderVals() {
     var self = this, st = this.state;
@@ -408,7 +457,7 @@ class Component extends DCLogic {
     });
     var rings = {};
     ZONES.forEach(function (z, i) { rings['ring' + (i + 1)] = (st.zone === z[0]) ? z[4] : z[5]; });
-    var shipSummary = zSel ? zSel[1] + (ship ? ' · $' + ship : ' · por confirmar') : 'Elige tu zona';
+    var shipSummary = zSel ? zSel[1] + (ship ? ' · $' + ship : ' · por confirmar') + (st.point ? ' (a ~' + st.point[2].toFixed(1) + ' km)' : '') : 'Elige tu zona';
     var summary = '¡Hola Wuf! Quiero personalizar un collar:\n' +
       '• Mascota: ' + (pet || 'por definir') + '\n' +
       '• Medida: ' + sizeLabel + '\n' +
@@ -445,7 +494,7 @@ class Component extends DCLogic {
       placaLabel: 'Placa de hueso azul grabada con ' + placaText,
       placaCardNote: st.placa ? 'Incluida en tu pedido. Se dona al 100% a Vida Animal CUU.' : 'Agrégala en el paso 4 por $180. Se dona al 100% a Vida Animal CUU.',
       placaSummary: st.placa ? 'Sí, +$' + PLACA : 'Sin placa',
-      totalLabel: '$' + total + ' MXN', zones: zones, shipSummary: shipSummary, ring1: rings.ring1, ring2: rings.ring2, ring3: rings.ring3, ring4: rings.ring4,
+      totalLabel: '$' + total + ' MXN', zones: zones, shipSummary: shipSummary, addr: st.addr, geoMsg: st.geoMsg, searchLabel: st.searching ? 'Buscando…' : 'Calcular zona', onAddr: function (e) { self.onAddr(e); }, onSearch: function () { self.onSearch(); }, ring1: rings.ring1, ring2: rings.ring2, ring3: rings.ring3, ring4: rings.ring4,
       priceBreakdown: (isCustom ? (cur[2] ? 'Collar medida especial $' + cur[2] : 'Collar: escribe su medida') : 'Collar talla ' + cur[0] + ' $' + cur[2]) + (nLet ? ' + ' + nLet + (nLet === 1 ? ' letra' : ' letras') + ' $' + letCost : '') + (st.placa ? ' + plaquita solidaria $' + PLACA : '') + (zSel ? (ship ? ' + envío $' + ship : ' + envío por confirmar') : ' + envío según zona') + '. Precios en pesos mexicanos.',
       placaHint: st.placa ? (pet ? 'Se grabará: ' + placaText + '. Lo puedes ver en la vista previa.' : 'Escribe su nombre en el paso 3 para verlo en la placa.') : 'Placa de hueso con su nombre grabado, $180 MXN adicionales al collar.',
       onPetName: function (e) { self.setState({ petName: e.target.value, copied: '' }); },

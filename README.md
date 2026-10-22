@@ -40,7 +40,8 @@ En `personaliza.html`, dentro de la clase `Component`:
 - **Precio de la placa:** `var PLACA = 180;`
 - **Lista de respaldo de colores:** `BASE`. Va en el mismo orden que la carta `assets/img/sprite.jpg`.
 - **Precios de envío por zona:** el último renglón del script, `mountPage(Component, {"zona1": 30, ...})`
-- **Zonas y distancias:** la lista `ZONES`
+- **Zonas y distancias:** la lista `ZONES` y los cortes de 3, 6 y 10 km en `setPoint`
+- **Punto de salida del envío:** `geoOrigin()` (por defecto cerca de la UACH, campus II). Se cambia con `mountPage(Component, {"origen": [latitud, longitud], ...})`. El mapa usa OpenStreetMap y Leaflet (se cargan de internet)
 
 ## Publicar en Netlify
 
