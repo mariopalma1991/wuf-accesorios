@@ -133,21 +133,19 @@ button{font-family:inherit;cursor:pointer}
 <!-- 1 MEDIDA -->
 <fieldset style="margin: 0; border: 2px solid #EFE4D4; background: #FFFFFF; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
 <legend style="padding: 0 8px; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 22px; line-height: 26px"><span style="display: inline-flex; width: 30px; height: 30px; border-radius: 10px; background: #A58BE7; align-items: center; justify-content: center; font-size: 17px; margin-right: 8px">3</span>Medida del cuello</legend>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px">
-<sc-for list="{{sizes}}" as="s" hint-placeholder-count="5">
-<button class="wopt" type="button" onClick="{{s.pick}}" aria-pressed="{{s.pressed}}" style="min-height: 84px; border-radius: 16px; border: 2px solid {{s.border}}; background: {{s.bg}}; color: #28314D; padding: 8px 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px">
+<label for="cm" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-weight: 700; font-size: 16px">Su cuello mide
+<input id="cm" type="number" min="15" max="80" step="0.5" inputmode="decimal" value="{{custom}}" onInput="{{onCustom}}" placeholder="35" style="width: 96px; min-height: 44px; box-sizing: border-box; border: 2px solid #28314D; border-radius: 12px; padding: 8px 12px; font: inherit; font-weight: 800; font-size: 18px; color: #28314D; background: #FFF9F0">cm</label>
+<span style="font-size: 14px; line-height: 20px; font-weight: 800">{{customHint}}</span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 10px">
+<sc-for list="{{sizes}}" as="s" hint-placeholder-count="4">
+<div style="min-height: 84px; border-radius: 16px; border: 2px solid {{s.border}}; background: {{s.bg}}; color: #28314D; padding: 8px 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-align: center">
 <span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 20px; line-height: 22px">{{s.id}}</span>
 <span style="font-size: 13px; line-height: 16px; font-weight: 700">{{s.range}}</span>
 <span style="font-size: 14px; line-height: 18px; font-weight: 800">{{s.price}}</span>
-</button>
+</div>
 </sc-for>
 </div>
-<sc-if value="{{isCustom}}" hint-placeholder-val="{{ false }}">
-<label for="cm" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-weight: 700; font-size: 16px">Su cuello mide
-<input id="cm" type="number" min="15" max="80" inputmode="decimal" value="{{custom}}" onInput="{{onCustom}}" placeholder="35" style="width: 96px; min-height: 44px; box-sizing: border-box; border: 2px solid #28314D; border-radius: 12px; padding: 8px 12px; font: inherit; font-weight: 800; font-size: 18px; color: #28314D; background: #FFF9F0">cm</label>
-<span style="font-size: 14px; line-height: 20px; font-weight: 700">{{customHint}}</span>
-</sc-if>
-<p style="margin: 0; font-size: 14px; line-height: 20px; color: #5B6380">Mide alrededor del cuello con una cinta y deja espacio para dos dedos. Si dudas entre dos tallas, elige la grande.</p>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #5B6380">Mide alrededor del cuello con una cinta y deja espacio para dos dedos. Si dudas entre dos medidas, escribe la mayor. Nosotros elegimos la talla que te corresponde.</p>
 </fieldset>
 
 <!-- 4 PLACA -->
@@ -461,30 +459,25 @@ class Component extends DCLogic {
         sub: '$' + y.price + ' por letra', pressed: on ? 'true' : 'false', border: on ? INK : '#EFE4D4', bg: on ? '#E0F6F0' : '#FFFFFF',
         pick: function () { self.setState({ style: y.name, copied: '' }); } };
     });
-    var sizes = SIZES.concat([['Otra', 'Tú la escribes', null]]).map(function (s) {
-      var on = st.size === s[0];
-      return { id: s[0], range: s[1], price: s[2] ? '$' + s[2] : 'Calculado', pressed: on ? 'true' : 'false', border: on ? INK : '#EFE4D4', bg: on ? '#EEE8FB' : '#FFFFFF',
-        pick: function () { self.setState({ size: s[0], copied: '' }); } };
+    var cm = parseFloat(String(st.custom).replace(',', '.'));
+    var cmOk = cm >= 15 && cm <= 80;
+    var bi = cmOk ? (cm <= 28 ? 0 : cm <= 38 ? 1 : cm <= 48 ? 2 : 3) : -1;
+    var extra = cmOk && cm > 60 ? Math.ceil((cm - 60) / 10) * 15 : 0;
+    var sizes = SIZES.map(function (s, k) {
+      var on = k === bi;
+      return { id: s[0], range: s[1], price: '$' + s[2], border: on ? INK : '#EFE4D4', bg: on ? '#EEE8FB' : '#FFFFFF' };
     });
-    var isCustom = st.size === 'Otra';
+    var isCustom = true;
     var cur, sizeLabel, customHint = '';
-    if (isCustom) {
-      var cm = parseFloat(String(st.custom).replace(',', '.'));
-      if (cm > 0) {
-        var bi = cm <= 28 ? 0 : cm <= 38 ? 1 : cm <= 48 ? 2 : 3;
-        var extra = cm > 60 ? Math.ceil((cm - 60) / 10) * 15 : 0;
-        var cprice = SIZES[bi][2] + extra;
-        cur = ['Otra (' + cm + ' cm)', cm + ' cm', cprice];
-        sizeLabel = 'Medida especial · cuello ' + cm + ' cm';
-        customHint = cm > 60 ? 'Precio: $' + cprice + ' (talla XG $' + SIZES[3][2] + ' + $15 por cada 10 cm extra).' : 'Precio: $' + cprice + ', igual que la talla ' + SIZES[bi][0] + ' (' + SIZES[bi][1] + ').';
-      } else {
-        cur = ['Otra', '', 0];
-        sizeLabel = 'Medida especial · por definir';
-        customHint = 'Escribe la medida para calcular el precio.';
-      }
+    if (cmOk) {
+      var cprice = SIZES[bi][2] + extra;
+      cur = [SIZES[bi][0], cm + ' cm', cprice];
+      sizeLabel = 'Talla ' + SIZES[bi][0] + ' · cuello ' + cm + ' cm';
+      customHint = cm > 60 ? 'Te corresponde la talla XG con medida especial: $' + cprice + ' ($' + SIZES[3][2] + ' + $15 por cada 10 cm extra).' : 'Te corresponde la talla ' + SIZES[bi][0] + ' (' + SIZES[bi][1] + '): $' + cprice + '.';
     } else {
-      cur = SIZES.filter(function (s) { return s[0] === st.size; })[0] || SIZES[1];
-      sizeLabel = 'Talla ' + cur[0] + ' · cuello ' + cur[1];
+      cur = ['', '', 0];
+      sizeLabel = 'Medida por definir';
+      customHint = String(st.custom).trim() ? 'Escribe una medida entre 15 y 80 cm.' : 'Escribe la medida y nosotros elegimos tu talla.';
     }
 
     var targets = [
@@ -546,7 +539,7 @@ class Component extends DCLogic {
     var rings = {};
     ZONES.forEach(function (z, i) { rings['ring' + (i + 1)] = (st.zone === z[0]) ? z[4] : z[5]; });
     var shipSummary = zSel ? zSel[1] + (ship ? ' · $' + ship : ' · por confirmar') + (st.point ? ' (a ~' + st.point[2].toFixed(1) + ' km)' : '') : 'Elige tu zona';
-    var pCollar = '$' + cur[2];
+    var pCollar = cmOk ? '$' + cur[2] : '—';
     var lettersLine = nLet ? style.name + ' · ' + nLet + (nLet === 1 ? ' letra' : ' letras') : style.name;
     var pLetters = nLet ? '$' + letCost : 'Falta el nombre';
     var placaLine = st.placa ? 'Con "' + (pet || 'su nombre') + '"' : 'Sin placa';
