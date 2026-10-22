@@ -117,8 +117,10 @@
           if (s0 != null) { try { el.setSelectionRange(s0, s1); } catch (e) {} }
         }
       }
+      if (comp.afterRender) comp.afterRender();
     };
     comp.__render();
+    if (comp.afterRender) comp.afterRender();
     if (comp.componentDidMount) comp.componentDidMount();
     return comp;
   };
