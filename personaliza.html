@@ -235,7 +235,36 @@ button{font-family:inherit;cursor:pointer}
 <div style="background: #FF6B85; border-radius: 28px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
 <h2 style="margin: 0; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 26px; line-height: 30px">¡Listo! Mándanos tu pedido</h2>
 <p style="margin: 0; font-size: 16px; line-height: 24px">Mándanos tu pedido por WhatsApp y te confirmamos precio y entrega.</p>
-<pre style="margin: 0; background: #FFFFFF; border-radius: 16px; padding: 16px; font-family: Nunito, sans-serif; font-size: 15px; line-height: 23px; font-weight: 600; white-space: pre-wrap; user-select: all; color: #28314D">{{summary}}</pre>
+<div style="background: #FFFFFF; border-radius: 20px; padding: 18px 18px 16px; color: #28314D; display: flex; flex-direction: column">
+<div style="display: flex; flex-direction: column; gap: 2px; padding-bottom: 14px">
+<span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 24px; line-height: 28px">{{orderTitle}}</span>
+<span style="font-size: 15px; line-height: 20px; font-weight: 700; color: #5B6380">{{orderFrom}}</span>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; padding: 12px 0; border-top: 2px dashed #EFE4D4">
+<div style="min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; line-height: 16px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #5B6380">Collar</span><span style="font-weight: 800; font-size: 16px; line-height: 22px">{{sizeLabel}}</span></div>
+<span style="flex: none; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 19px; line-height: 24px">{{pCollar}}</span>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; padding: 12px 0; border-top: 2px dashed #EFE4D4">
+<div style="min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; line-height: 16px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #5B6380">Colores</span><span style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 16px; line-height: 22px"><span class="wsw" aria-hidden="true" style="flex: none; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid rgba(40,49,77,.25); {{swA}}"></span>{{colorA}}<span aria-hidden="true">+</span><span class="wsw" aria-hidden="true" style="flex: none; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid rgba(40,49,77,.25); {{swB}}"></span>{{colorB}}</span></div>
+<span style="flex: none; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 19px; line-height: 24px"></span>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; padding: 12px 0; border-top: 2px dashed #EFE4D4">
+<div style="min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; line-height: 16px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #5B6380">Letras</span><span style="font-weight: 800; font-size: 16px; line-height: 22px">{{lettersLine}}</span></div>
+<span style="flex: none; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 19px; line-height: 24px">{{pLetters}}</span>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; padding: 12px 0; border-top: 2px dashed #EFE4D4">
+<div style="min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; line-height: 16px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #5B6380">Plaquita solidaria</span><span style="font-weight: 800; font-size: 16px; line-height: 22px">{{placaLine}}</span><span style="font-size: 13px; line-height: 17px; color: #5B6380">{{placaNote2}}</span></div>
+<span style="flex: none; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 19px; line-height: 24px">{{pPlaca}}</span>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; padding: 12px 0; border-top: 2px dashed #EFE4D4">
+<div style="min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; line-height: 16px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #5B6380">Envío</span><span style="font-weight: 800; font-size: 16px; line-height: 22px">{{shipLine}}</span></div>
+<span style="flex: none; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 19px; line-height: 24px">{{pShip}}</span>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 2px solid #28314D; padding-top: 14px; margin-top: 2px">
+<span style="font-weight: 800; font-size: 18px">Total</span>
+<span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 30px; line-height: 32px">{{totalLabel}}</span>
+</div>
+</div>
 <div style="display: flex; flex-wrap: wrap; gap: 10px">
 <a class="wbtn" href="{{waHref}}" target="_blank" rel="noopener" style="min-height: 52px; box-sizing: border-box; border-radius: 999px; background: #28314D; color: #FFF9F0; text-decoration: none; padding: 14px 22px; font-weight: 800; font-size: 17px; display: inline-flex; align-items: center; gap: 8px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFF9F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.7-5.1A8.5 8.5 0 1 1 8.2 19.4Z"></path><path d="M9 9.5c.3 2.3 2.7 4.6 5 5l1.2-1.2-1.9-1-.8.6c-.9-.4-1.6-1.1-2-2l.6-.8-1-1.9Z"></path></svg>Enviar por WhatsApp</a>
 </div>
@@ -517,14 +546,23 @@ class Component extends DCLogic {
     var rings = {};
     ZONES.forEach(function (z, i) { rings['ring' + (i + 1)] = (st.zone === z[0]) ? z[4] : z[5]; });
     var shipSummary = zSel ? zSel[1] + (ship ? ' · $' + ship : ' · por confirmar') + (st.point ? ' (a ~' + st.point[2].toFixed(1) + ' km)' : '') : 'Elige tu zona';
-    var summary = '¡Hola Wuf! Quiero personalizar un collar:\n' +
-      '• ' + (client || 'Nombre por definir') + ' - Mascota: ' + (pet || 'por definir') + '\n' +
-      '• Medida: ' + sizeLabel + '\n' +
-      '• Colores: ' + aN + ' (principal) + ' + bN + ' (contraste)\n' +
-      '• Plaquita solidaria: ' + (st.placa ? 'sí, con "' + (pet || 'nombre por definir') + '" (+$' + PLACA + ', 100% para Vida Animal CUU)' : 'no') + '\n' +
-      '• Letras (' + style.name + '): ' + nLet + ' × $' + LETRA + ' = $' + letCost + '\n' +
-      '• Envío: ' + shipSummary + '\n' +
-      '• Total: $' + total + ' MXN' + (zSel && !ship ? ' + envío' : '');
+    var pCollar = '$' + cur[2];
+    var lettersLine = nLet ? style.name + ' · ' + nLet + (nLet === 1 ? ' letra' : ' letras') : style.name;
+    var pLetters = nLet ? '$' + letCost : 'Falta el nombre';
+    var placaLine = st.placa ? 'Con "' + (pet || 'su nombre') + '"' : 'Sin placa';
+    var pPlaca = st.placa ? '$' + PLACA : '—';
+    var placaNote2 = st.placa ? 'El 100% se dona a Vida Animal CUU' : '';
+    var shipLine = zSel ? zSel[1] + (st.point ? ' · a ~' + st.point[2].toFixed(1) + ' km' : '') : 'Elige tu zona abajo';
+    var pShip = zSel ? (ship ? '$' + ship : 'Por confirmar') : '—';
+    var orderTitle = pet ? 'Collar para ' + pet : 'Tu collar';
+    var orderFrom = client ? 'Pedido de ' + client : 'Escribe tu nombre arriba';
+    var summary = 'Hola Wuf! Soy ' + (client || '(mi nombre)') + ' y quiero pedir un collar' + (pet ? ' para ' + pet : '') + '.\n\n' +
+      '*Collar:* ' + sizeLabel + ' · ' + pCollar + '\n' +
+      '*Colores:* ' + aN + ' + ' + bN + '\n' +
+      '*Letras:* ' + lettersLine + (nLet ? ' · ' + pLetters : '') + '\n' +
+      '*Plaquita solidaria:* ' + (st.placa ? 'sí, con "' + (pet || 'nombre por definir') + '" · $' + PLACA : 'no') + '\n' +
+      '*Envío:* ' + (zSel ? shipLine + (ship ? ' · $' + ship : ' · por confirmar') : 'por definir') + '\n\n' +
+      '*Total: $' + total + ' MXN*' + (zSel && !ship ? ' + envío' : '');
     var placaText = (pet || 'SU NOMBRE').toUpperCase();
     var CW = { A:.722,B:.722,C:.722,D:.722,E:.667,F:.611,G:.778,H:.722,I:.278,J:.556,K:.722,L:.611,M:.833,N:.722,'Ñ':.722,O:.778,P:.667,Q:.778,R:.722,S:.667,T:.611,U:.722,V:.667,W:.944,X:.667,Y:.667,Z:.611,' ':.278 };
     var em = 0;
@@ -547,6 +585,7 @@ class Component extends DCLogic {
       copyLabel: st.copied === 'ok' ? '¡Copiado!' : st.copied === 'fail' ? 'Selecciona el texto y cópialo' : 'Copiar pedido',
       hasName: false, noName: true, beads: beads, beadGap: (0.4 * scale).toFixed(2) + 'cqw',
       previewNote: 'Imagen aproximada: los colores y el tejido pueden variar un poco en el collar real. El nombre de la foto es solo de ejemplo.',
+      orderTitle: orderTitle, orderFrom: orderFrom, pCollar: pCollar, lettersLine: lettersLine, pLetters: pLetters, placaLine: placaLine, pPlaca: pPlaca, placaNote2: placaNote2, shipLine: shipLine, pShip: pShip,
       clientName: st.clientName, petName: st.petName, petLabel: pet || 'Sin nombre aún',
       letHint: nLet ? style.name + ': ' + nLet + (nLet === 1 ? ' letra' : ' letras') + ' × $' + LETRA + ' = $' + letCost + ' MXN.' : 'Su nombre va en letras sobre el collar (' + style.name + '): $' + LETRA + ' MXN por letra.',
       placa: st.placa, placaOpts: placaOpts, placaText: placaText, placaSize: placaSize,
