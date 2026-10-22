@@ -54,7 +54,7 @@ button{font-family:inherit;cursor:pointer}
 <p style="margin: 0; font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase">Diseña su Wuf!</p>
 <h1 style="margin: 0; font-family: 'Baloo 2', Nunito, sans-serif; font-weight: 800; font-size: clamp(40px, 5.6vw, 68px); line-height: 1.12; letter-spacing: -.01em">Escoge sus colores y míralo <span style="display: inline-block; background: #FFCF46; padding: 0 .14em .06em; border-radius: 14px; line-height: 1.05; white-space: nowrap">en vivo</span>.</h1>
 </div>
-<p style="margin: 0; flex: 1 1 320px; max-width: 28em; font-size: 19px; line-height: 30px; color: #4A5270">Elige la medida y dos colores de paracord. Al final te damos el pedido listo para mandarlo por Instagram.</p>
+<p style="margin: 0; flex: 1 1 320px; max-width: 28em; font-size: 19px; line-height: 30px; color: #4A5270">Elige la medida y dos colores de paracord. Al final te damos el pedido listo para mandarlo por WhatsApp.</p>
 </section>
 
 <!-- BUILDER -->
@@ -232,11 +232,11 @@ button{font-family:inherit;cursor:pointer}
 <!-- ENVIAR -->
 <div style="background: #FF6B85; border-radius: 28px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
 <h2 style="margin: 0; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 26px; line-height: 30px">¡Listo! Mándanos tu pedido</h2>
-<p style="margin: 0; font-size: 16px; line-height: 24px">Copia el pedido y pégalo en nuestro chat de Instagram. Te confirmamos precio y entrega.</p>
+<p style="margin: 0; font-size: 16px; line-height: 24px">Mándanos tu pedido por WhatsApp y te confirmamos precio y entrega.</p>
 <pre style="margin: 0; background: #FFFFFF; border-radius: 16px; padding: 16px; font-family: Nunito, sans-serif; font-size: 15px; line-height: 23px; font-weight: 600; white-space: pre-wrap; user-select: all; color: #28314D">{{summary}}</pre>
 <div style="display: flex; flex-wrap: wrap; gap: 10px">
 <button class="wbtn" type="button" onClick="{{onCopy}}" style="min-height: 52px; border-radius: 999px; border: 2px solid #28314D; background: #FFFFFF; color: #28314D; padding: 12px 22px; font-weight: 800; font-size: 17px; display: inline-flex; align-items: center; gap: 8px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#28314D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"></path></svg>{{copyLabel}}</button>
-<a class="wbtn" href="https://ig.me/m/wuf.accesorios" style="min-height: 52px; box-sizing: border-box; border-radius: 999px; background: #28314D; color: #FFF9F0; text-decoration: none; padding: 14px 22px; font-weight: 800; font-size: 17px; display: inline-flex; align-items: center; gap: 8px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFF9F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>Abrir chat de Instagram</a>
+<a class="wbtn" href="{{waHref}}" target="_blank" rel="noopener" style="min-height: 52px; box-sizing: border-box; border-radius: 999px; background: #28314D; color: #FFF9F0; text-decoration: none; padding: 14px 22px; font-weight: 800; font-size: 17px; display: inline-flex; align-items: center; gap: 8px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFF9F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.7-5.1A8.5 8.5 0 1 1 8.2 19.4Z"></path><path d="M9 9.5c.3 2.3 2.7 4.6 5 5l1.2-1.2-1.9-1-.8.6c-.9-.4-1.6-1.1-2-2l.6-.8-1-1.9Z"></path></svg>Enviar por WhatsApp</a>
 </div>
 </div>
 </div>
@@ -551,7 +551,7 @@ class Component extends DCLogic {
       placaLabel: 'Placa de hueso azul grabada con ' + placaText,
       placaCardNote: st.placa ? 'Incluida en tu pedido. Se dona al 100% a Vida Animal CUU.' : 'Agrégala en el paso 4 por $180. Se dona al 100% a Vida Animal CUU.',
       placaSummary: st.placa ? 'Sí, +$' + PLACA : 'Sin placa',
-      totalLabel: '$' + total + ' MXN', zones: zones, shipSummary: shipSummary, addr: st.addr, geoMsg: st.geoMsg, hasSugs: st.sugs.length > 0, sugOpen: st.sugs.length > 0 ? 'true' : 'false', onKey: function (e) { self.onKey(e); }, sugs: st.sugs.map(function (g) { return { main: g.main, sub: g.sub, pick: function () { self.pickSug(g); } }; }), searchLabel: st.searching ? 'Buscando…' : 'Calcular zona', onAddr: function (e) { self.onAddr(e); }, onSearch: function () { self.onSearch(); }, ring1: rings.ring1, ring2: rings.ring2, ring3: rings.ring3, ring4: rings.ring4,
+      totalLabel: '$' + total + ' MXN', zones: zones, shipSummary: shipSummary, addr: st.addr, geoMsg: st.geoMsg, waHref: 'https://wa.me/526144879916?text=' + encodeURIComponent(summary), hasSugs: st.sugs.length > 0, sugOpen: st.sugs.length > 0 ? 'true' : 'false', onKey: function (e) { self.onKey(e); }, sugs: st.sugs.map(function (g) { return { main: g.main, sub: g.sub, pick: function () { self.pickSug(g); } }; }), searchLabel: st.searching ? 'Buscando…' : 'Calcular zona', onAddr: function (e) { self.onAddr(e); }, onSearch: function () { self.onSearch(); }, ring1: rings.ring1, ring2: rings.ring2, ring3: rings.ring3, ring4: rings.ring4,
       priceBreakdown: (isCustom ? (cur[2] ? 'Collar medida especial $' + cur[2] : 'Collar: escribe su medida') : 'Collar talla ' + cur[0] + ' $' + cur[2]) + (nLet ? ' + ' + nLet + (nLet === 1 ? ' letra' : ' letras') + ' $' + letCost : '') + (st.placa ? ' + plaquita solidaria $' + PLACA : '') + (zSel ? (ship ? ' + envío $' + ship : ' + envío por confirmar') : ' + envío según zona') + '. Precios en pesos mexicanos.',
       placaHint: st.placa ? (pet ? 'Así se verá la placa con su nombre grabado:' : 'Escribe su nombre en el paso 2 para verlo en la placa.') : 'Placa de hueso con su nombre grabado, $180 MXN adicionales al collar.',
       onPetName: function (e) { self.setState({ petName: e.target.value, copied: '' }); },
