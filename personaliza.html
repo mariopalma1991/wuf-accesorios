@@ -560,13 +560,16 @@ class Component extends DCLogic {
     var pShip = zSel ? (ship ? '$' + ship : 'Por confirmar') : '—';
     var orderTitle = pet ? 'Collar para ' + pet : 'Tu collar';
     var orderFrom = client ? 'Pedido de ' + client : 'Escribe tu nombre arriba';
-    var summary = 'Hola Wuf! Soy ' + (client || '(mi nombre)') + ' y quiero pedir un collar' + (pet ? ' para ' + pet : '') + '.\n\n' +
-      '*Collar:* ' + sizeLabel + ' · ' + pCollar + '\n' +
-      '*Colores:* ' + aN + ' + ' + bN + '\n' +
-      '*Letras:* ' + lettersLine + (nLet ? ' · ' + pLetters : '') + '\n' +
-      '*Plaquita solidaria:* ' + (st.placa ? 'sí, con "' + (pet || 'nombre por definir') + '" · $' + PLACA : 'no') + '\n' +
-      '*Envío:* ' + (zSel ? shipLine + (ship ? ' · $' + ship : ' · por confirmar') : 'por definir') + '\n\n' +
-      '*Total: $' + total + ' MXN*' + (zSel && !ship ? ' + envío' : '');
+    var summary = '🐾 *NUEVO PEDIDO · WUF!*\n\n' +
+      'Hola Wuf! Soy *' + (client || '(mi nombre)') + '* y quiero pedir un collar' + (pet ? ' para *' + pet + '*' : '') + '.\n' +
+      '━━━━━━━━━━━━━━\n\n' +
+      '📏 *COLLAR*\n' + sizeLabel + ' · ' + pCollar + '\n\n' +
+      '🎨 *COLORES*\n' + aN + ' + ' + bN + '\n\n' +
+      '🔤 *LETRAS*\n' + lettersLine + (nLet ? ' · ' + pLetters : '') + '\n\n' +
+      '❤️ *PLAQUITA SOLIDARIA*\n' + (st.placa ? 'Sí, con "' + (pet || 'nombre por definir') + '" · $' + PLACA : 'No') + '\n\n' +
+      '🚚 *ENVÍO*\n' + (zSel ? shipLine + (ship ? ' · $' + ship : ' · por confirmar') : 'Por definir') + '\n\n' +
+      '━━━━━━━━━━━━━━\n' +
+      '💰 *TOTAL: $' + total + ' MXN*' + (zSel && !ship ? ' + envío' : '');
     var placaText = (pet || 'SU NOMBRE').toUpperCase();
     var CW = { A:.722,B:.722,C:.722,D:.722,E:.667,F:.611,G:.778,H:.722,I:.278,J:.556,K:.722,L:.611,M:.833,N:.722,'Ñ':.722,O:.778,P:.667,Q:.778,R:.722,S:.667,T:.611,U:.722,V:.667,W:.944,X:.667,Y:.667,Z:.611,' ':.278 };
     var em = 0;
