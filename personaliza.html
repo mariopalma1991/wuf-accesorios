@@ -64,7 +64,7 @@ button{font-family:inherit;cursor:pointer}
 <div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
 <div style="background: #EEE8FB; border-radius: 32px; padding: clamp(16px, 2.4vw, 24px); display: flex; flex-direction: column; gap: 16px">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 4px 6px 0">
-<span style="font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase">Así se verá</span>
+<span style="font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase">Así se verá <span style="letter-spacing: .08em; color: #5B6380">· aproximado</span></span>
 <span style="background: #FFFFFF; border-radius: 999px; padding: 6px 14px; font-size: 14px; line-height: 18px; font-weight: 800">{{sizeLabel}}</span>
 </div>
 <div role="img" aria-label="{{previewLabel}}" style="position: relative; width: 100%; aspect-ratio: 1185 / 500; border-radius: 22px; overflow: hidden; isolation: isolate; box-shadow: 0 18px 40px -16px rgba(40,49,77,.35); background: #6B3A1E; container-type: inline-size">
@@ -544,7 +544,7 @@ class Component extends DCLogic {
       summary: summary,
       copyLabel: st.copied === 'ok' ? '¡Copiado!' : st.copied === 'fail' ? 'Selecciona el texto y cópialo' : 'Copiar pedido',
       hasName: false, noName: true, beads: beads, beadGap: (0.4 * scale).toFixed(2) + 'cqw',
-      previewNote: 'El nombre de la foto es solo de ejemplo. Los colores son aproximados al paracord real.',
+      previewNote: 'Imagen aproximada: los colores y el tejido pueden variar un poco en el collar real. El nombre de la foto es solo de ejemplo.',
       petName: st.petName, petLabel: pet || 'Sin nombre aún',
       letHint: nLet ? style.name + ': ' + nLet + (nLet === 1 ? ' letra' : ' letras') + ' × $' + LETRA + ' = $' + letCost + ' MXN.' : 'Su nombre va en letras sobre el collar (' + style.name.toLowerCase() + '): $' + LETRA + ' MXN por letra.',
       placa: st.placa, placaOpts: placaOpts, placaText: placaText, placaSize: placaSize,
