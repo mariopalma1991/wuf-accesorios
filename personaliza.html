@@ -563,6 +563,8 @@ class Component extends DCLogic {
     var summary = '🐾 *NUEVO PEDIDO · WUF!*\n\n' +
       'Hola Wuf! Soy *' + (client || '(mi nombre)') + '* y quiero pedir un collar' + (pet ? ' para *' + pet + '*' : '') + '.\n' +
       '━━━━━━━━━━━━━━\n\n' +
+      '👤 *NOMBRE*\n' + (client || 'Por definir') + '\n\n' +
+      '🐶 *NOMBRE DE MASCOTA*\n' + (pet || 'Por definir') + '\n\n' +
       '📏 *COLLAR*\n' + sizeLabel + ' · ' + pCollar + '\n\n' +
       '🎨 *COLORES*\n' + aN + ' + ' + bN + '\n\n' +
       '🔤 *LETRAS*\n' + lettersLine + (nLet ? ' · ' + pLetters : '') + '\n\n' +
