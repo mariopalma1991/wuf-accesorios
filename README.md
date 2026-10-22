@@ -28,7 +28,7 @@ Cada página tiene su contenido dentro de `<template id="tpl">` y su lógica al 
 Los cordones y los estilos de letra se manejan en la hoja **Inventario Wuf!** de Google Drive, sin tocar el código:
 
 - **Cordones:** desmarcar *Disponible* oculta el color en las dos páginas. Un color nuevo necesita su *Tono para la vista previa* (#RRGGBB) y, de preferencia, un enlace a su foto en Drive.
-- **Estilos de letra:** nombre, precio por letra y disponibilidad. Si hay más de un estilo disponible, la página deja elegirlo.
+- **Estilos de letra:** nombre, precio por letra, disponibilidad y descripción. Las fotos de cada estilo están en `assets/img/letras_*.jpg` (se emparejan por nombre; si pones un enlace en la columna Foto, se usa ese).
 
 La hoja debe estar compartida como **Cualquier persona con el enlace: Lector**. El ID de la hoja está en `assets/js/inventario.js`. Si la hoja no se puede leer, las páginas usan la lista de respaldo que traen dentro (`BASE` en `personaliza.html`).
 
