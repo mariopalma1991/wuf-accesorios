@@ -121,11 +121,17 @@ button{font-family:inherit;cursor:pointer}
 <input id="mascota" type="text" maxlength="30" autocomplete="off" value="{{petName}}" onInput="{{onPetName}}" placeholder="Ej. Nala" style="min-height: 52px; box-sizing: border-box; border: 2px solid #28314D; border-radius: 14px; padding: 10px 16px; font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 22px; color: #28314D; background: #FFF9F0">
 <sc-if value="{{multiStyle}}" hint-placeholder-val="{{ false }}">
 <span style="font-weight: 700; font-size: 16px">Estilo de letra</span>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px">
-<sc-for list="{{styleOpts}}" as="y" hint-placeholder-count="2">
-<button class="wopt" type="button" onClick="{{y.pick}}" aria-pressed="{{y.pressed}}" style="min-height: 64px; border-radius: 16px; border: 2px solid {{y.border}}; background: {{y.bg}}; color: #28314D; padding: 10px 12px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; text-align: left">
-<span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 18px; line-height: 22px">{{y.name}}</span>
-<span style="font-size: 13px; line-height: 16px; font-weight: 700">{{y.sub}}</span>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 12px">
+<sc-for list="{{styleOpts}}" as="y" hint-placeholder-count="4">
+<button class="wopt" type="button" onClick="{{y.pick}}" aria-pressed="{{y.pressed}}" style="border-radius: 18px; border: 2px solid {{y.border}}; background: {{y.bg}}; color: #28314D; padding: 8px 8px 12px; display: flex; flex-direction: column; align-items: stretch; gap: 8px; text-align: left">
+<span style="display: block; aspect-ratio: 4 / 3; border-radius: 12px; overflow: hidden; background: {{y.tile}}; position: relative">
+<img src="{{y.photo}}" alt="Letras {{y.name}}" loading="lazy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: {{y.imgDisplay}}">
+<span style="position: absolute; inset: 0; display: {{y.noPhotoDisplay}}; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: #5B6380">Foto pronto</span>
+</span>
+<span style="padding: 0 4px; display: flex; flex-direction: column; gap: 2px">
+<span style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px"><span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 19px; line-height: 22px">{{y.name}}</span><span style="font-size: 13px; line-height: 16px; font-weight: 800; white-space: nowrap">{{y.sub}}</span></span>
+<span style="font-size: 14px; line-height: 19px; font-weight: 600; color: #4A5270">{{y.desc}}</span>
+</span>
 </button>
 </sc-for>
 </div>
@@ -299,13 +305,24 @@ class Component extends DCLogic {
 
     var SIZES = [['CH','20–28 cm',170],['M','29–38 cm',185],['G','39–48 cm',200],['XG','49–60 cm',215]];
     var PLACA = 180;
-    var STYLES = inv && inv.styles.length ? inv.styles.filter(function (y) { return y.available && y.price != null; }) : [];
-    if (!STYLES.length) STYLES = [{ name: 'Letras surtidas', price: 5, desc: '' }];
+    var STYLE_BASE = [
+      { name: 'Classic', price: 5, photo: 'assets/img/letras_classic.jpg', tile: '#EEE8FB', desc: 'Las de siempre: brillantes, redonditas y en colores surtidos.' },
+      { name: 'WUF! Pearl', price: 5, photo: '', tile: '#EEE8FB', desc: 'Las perladas, con acabado brillante y delicado. Son las más elegantes.' },
+      { name: 'WUF! Candy', price: 5, photo: 'assets/img/letras_candy.jpg', tile: '#FDE7EE', desc: 'Las de colores vibrantes y efecto tornasol. Divertidas y llamativas.' },
+      { name: 'WUF! Pop', price: 5, photo: 'assets/img/letras_pop.jpg', tile: '#E0F6F0', desc: 'Las de base blanca y letras de colores. Modernas, juveniles y muy originales.' }
+    ];
+    var STYLES = inv && inv.styles.length ? inv.styles.filter(function (y) { return y.available && y.price != null; }) : STYLE_BASE.slice();
+    if (!STYLES.length) STYLES = STYLE_BASE.slice();
+    STYLES = STYLES.map(function (y) {
+      var b = STYLE_BASE.filter(function (x) { return x.name.toLowerCase() === String(y.name).toLowerCase(); })[0] || {};
+      return { name: y.name, price: y.price, photo: y.photo || b.photo || '', tile: b.tile || '#EEE8FB', desc: y.desc || b.desc || '' };
+    });
     var style = STYLES.filter(function (y) { return y.name === st.style; })[0] || STYLES[0];
     var LETRA = style.price;
     var styleOpts = STYLES.map(function (y) {
       var on = y === style;
-      return { name: y.name, sub: '$' + y.price + ' por letra', pressed: on ? 'true' : 'false', border: on ? INK : '#EFE4D4', bg: on ? '#E0F6F0' : '#FFFFFF',
+      return { name: y.name, desc: y.desc, photo: y.photo || 'assets/img/letras_classic.jpg', tile: y.tile, imgDisplay: y.photo ? 'block' : 'none', noPhotoDisplay: y.photo ? 'none' : 'flex',
+        sub: '$' + y.price + ' por letra', pressed: on ? 'true' : 'false', border: on ? INK : '#EFE4D4', bg: on ? '#E0F6F0' : '#FFFFFF',
         pick: function () { self.setState({ style: y.name, copied: '' }); } };
     });
     var sizes = SIZES.concat([['Otra', 'Tú la escribes', null]]).map(function (s) {
