@@ -34,7 +34,7 @@
     });
   }
 
-  var EVENTS = { onclick: 'click', oninput: 'input', onchange: 'change' };
+  var EVENTS = { onclick: 'click', oninput: 'input', onchange: 'change', onkeydown: 'keydown' };
 
   function renderChildren(src, scope, out) {
     for (var n = src.firstChild; n; n = n.nextSibling) renderNode(n, scope, out);
