@@ -72,8 +72,8 @@ button{font-family:inherit;cursor:pointer}
 <div class="wlayer wmaskB" style="background-color: {{hexB}}"></div>
 </div>
 <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 0 6px 4px">
-<span style="display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; border-radius: 999px; padding: 6px 12px 6px 6px; font-size: 14px; line-height: 18px; font-weight: 700"><span class="wsw" aria-hidden="true" style="width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid rgba(40,49,77,.25); background-position: {{posA}}"></span>Principal: {{colorA}}</span>
-<span style="display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; border-radius: 999px; padding: 6px 12px 6px 6px; font-size: 14px; line-height: 18px; font-weight: 700"><span class="wsw" aria-hidden="true" style="width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid rgba(40,49,77,.25); background-position: {{posB}}"></span>Contraste: {{colorB}}</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; border-radius: 999px; padding: 6px 12px 6px 6px; font-size: 14px; line-height: 18px; font-weight: 700"><span class="wsw" aria-hidden="true" style="width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid rgba(40,49,77,.25); {{swA}}"></span>Principal: {{colorA}}</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; border-radius: 999px; padding: 6px 12px 6px 6px; font-size: 14px; line-height: 18px; font-weight: 700"><span class="wsw" aria-hidden="true" style="width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid rgba(40,49,77,.25); {{swB}}"></span>Contraste: {{colorB}}</span>
 </div>
 <p style="margin: 0; padding: 0 6px 4px; font-size: 14px; line-height: 20px; color: #4A5270">{{previewNote}}</p>
 <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; background: #FFFFFF; border-radius: 22px; padding: 14px">
@@ -90,31 +90,53 @@ button{font-family:inherit;cursor:pointer}
 </div>
 </div>
 </div>
+<!-- 2 COLORES -->
+<fieldset style="margin: 0; border: 2px solid #EFE4D4; background: #FFFFFF; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
+<legend style="padding: 0 8px; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 22px; line-height: 26px"><span style="display: inline-flex; width: 30px; height: 30px; border-radius: 10px; background: #FFCF46; align-items: center; justify-content: center; font-size: 17px; margin-right: 8px">1</span>Colores del tejido</legend>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<sc-for list="{{targets}}" as="t" hint-placeholder-count="2">
+<button class="wopt" type="button" onClick="{{t.pick}}" aria-pressed="{{t.pressed}}" style="min-height: 64px; border-radius: 16px; border: 2px solid {{t.border}}; background: {{t.bg}}; color: #28314D; padding: 10px 12px; display: flex; align-items: center; gap: 12px; text-align: left">
+<span class="wsw" aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgba(40,49,77,.2); {{t.sw}}"></span>
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+<span style="font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase">{{t.label}}</span>
+<span style="font-weight: 800; font-size: 16px; line-height: 20px">{{t.value}}</span>
+</span>
+</button>
+</sc-for>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 700">Ahora eliges: {{targetHint}}</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(48px, 1fr)); gap: 8px">
+<sc-for list="{{colors}}" as="k" hint-placeholder-count="42">
+<button class="wopt wsw" type="button" onClick="{{k.pick}}" aria-pressed="{{k.pressed}}" aria-label="{{k.name}}" title="{{k.name}}" style="width: 100%; aspect-ratio: 1 / 1; min-height: 44px; border-radius: 50%; padding: 0; border: 3px solid {{k.ring}}; box-shadow: {{k.shadow}}; {{k.sw}}"></button>
+</sc-for>
+</div>
+</fieldset>
 
-<!-- SUMMARY -->
-<div style="background: #FFFFFF; border: 2px solid #EFE4D4; border-radius: 24px; box-shadow: 0 4px 0 rgba(40,49,77,.08); padding: 24px; display: flex; flex-direction: column; gap: 16px">
-<h2 style="margin: 0; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 26px; line-height: 30px">Tu pedido</h2>
-<dl style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px 20px">
-<div style="display: flex; flex-direction: column; gap: 2px"><dt style="font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #5B6380">Mascota</dt><dd style="margin: 0; font-weight: 700; font-size: 17px">{{petLabel}}</dd></div>
-<div style="display: flex; flex-direction: column; gap: 2px"><dt style="font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #5B6380">Medida</dt><dd style="margin: 0; font-weight: 700; font-size: 17px">{{sizeLabel}}</dd></div>
-<div style="display: flex; flex-direction: column; gap: 2px"><dt style="font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #5B6380">Colores</dt><dd style="margin: 0; font-weight: 700; font-size: 17px">{{colorA}} + {{colorB}}</dd></div>
-<div style="display: flex; flex-direction: column; gap: 2px"><dt style="font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #5B6380">Placa</dt><dd style="margin: 0; font-weight: 700; font-size: 17px">{{placaSummary}}</dd></div>
-<div style="display: flex; flex-direction: column; gap: 2px"><dt style="font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #5B6380">Envío</dt><dd style="margin: 0; font-weight: 700; font-size: 17px">{{shipSummary}}</dd></div>
-</dl>
-<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 2px dashed #EFE4D4; padding-top: 14px; flex-wrap: wrap">
-<span style="font-weight: 700; font-size: 17px">Total</span>
-<span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 26px">{{totalLabel}}</span>
+<!-- 3 MASCOTA -->
+<fieldset style="margin: 0; border: 2px solid #EFE4D4; background: #FFFFFF; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 10px; min-width: 0">
+<legend style="padding: 0 8px; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 22px; line-height: 26px"><span style="display: inline-flex; width: 30px; height: 30px; border-radius: 10px; background: #75D6C0; align-items: center; justify-content: center; font-size: 17px; margin-right: 8px">2</span>Tu mascota</legend>
+<label for="mascota" style="font-weight: 700; font-size: 16px">¿Cómo se llama?</label>
+<input id="mascota" type="text" maxlength="30" autocomplete="off" value="{{petName}}" onInput="{{onPetName}}" placeholder="Ej. Nala" style="min-height: 52px; box-sizing: border-box; border: 2px solid #28314D; border-radius: 14px; padding: 10px 16px; font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 22px; color: #28314D; background: #FFF9F0">
+<sc-if value="{{multiStyle}}" hint-placeholder-val="{{ false }}">
+<span style="font-weight: 700; font-size: 16px">Estilo de letra</span>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px">
+<sc-for list="{{styleOpts}}" as="y" hint-placeholder-count="2">
+<button class="wopt" type="button" onClick="{{y.pick}}" aria-pressed="{{y.pressed}}" style="min-height: 64px; border-radius: 16px; border: 2px solid {{y.border}}; background: {{y.bg}}; color: #28314D; padding: 10px 12px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; text-align: left">
+<span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 18px; line-height: 22px">{{y.name}}</span>
+<span style="font-size: 13px; line-height: 16px; font-weight: 700">{{y.sub}}</span>
+</button>
+</sc-for>
 </div>
-<span style="font-size: 14px; line-height: 20px; color: #5B6380">{{priceBreakdown}}</span>
-</div>
-</div>
+</sc-if>
+<span style="font-size: 14px; line-height: 20px; color: #5B6380">{{letHint}}</span>
+<p style="margin: 0; display: flex; align-items: flex-start; gap: 10px; background: #FFF4D1; border-radius: 14px; padding: 12px 14px; font-size: 14px; line-height: 20px; font-weight: 700"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#28314D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 0"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg><span>Los colores de las letras son según disponibilidad y no son personalizables. En Wuf! elegimos la combinación que mejor contraste con los colores de tu collar.</span></p>
+</fieldset>
 
-<!-- OPTIONS COLUMN -->
-<div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+
 
 <!-- 1 MEDIDA -->
 <fieldset style="margin: 0; border: 2px solid #EFE4D4; background: #FFFFFF; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
-<legend style="padding: 0 8px; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 22px; line-height: 26px"><span style="display: inline-flex; width: 30px; height: 30px; border-radius: 10px; background: #A58BE7; align-items: center; justify-content: center; font-size: 17px; margin-right: 8px">1</span>Medida del cuello</legend>
+<legend style="padding: 0 8px; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 22px; line-height: 26px"><span style="display: inline-flex; width: 30px; height: 30px; border-radius: 10px; background: #A58BE7; align-items: center; justify-content: center; font-size: 17px; margin-right: 8px">3</span>Medida del cuello</legend>
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px">
 <sc-for list="{{sizes}}" as="s" hint-placeholder-count="5">
 <button class="wopt" type="button" onClick="{{s.pick}}" aria-pressed="{{s.pressed}}" style="min-height: 84px; border-radius: 16px; border: 2px solid {{s.border}}; background: {{s.bg}}; color: #28314D; padding: 8px 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px">
@@ -131,39 +153,6 @@ button{font-family:inherit;cursor:pointer}
 </sc-if>
 <p style="margin: 0; font-size: 14px; line-height: 20px; color: #5B6380">Mide alrededor del cuello con una cinta y deja espacio para dos dedos. Si dudas entre dos tallas, elige la grande.</p>
 </fieldset>
-
-<!-- 2 COLORES -->
-<fieldset style="margin: 0; border: 2px solid #EFE4D4; background: #FFFFFF; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
-<legend style="padding: 0 8px; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 22px; line-height: 26px"><span style="display: inline-flex; width: 30px; height: 30px; border-radius: 10px; background: #FFCF46; align-items: center; justify-content: center; font-size: 17px; margin-right: 8px">2</span>Colores del tejido</legend>
-<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
-<sc-for list="{{targets}}" as="t" hint-placeholder-count="2">
-<button class="wopt" type="button" onClick="{{t.pick}}" aria-pressed="{{t.pressed}}" style="min-height: 64px; border-radius: 16px; border: 2px solid {{t.border}}; background: {{t.bg}}; color: #28314D; padding: 10px 12px; display: flex; align-items: center; gap: 12px; text-align: left">
-<span class="wsw" aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgba(40,49,77,.2); background-position: {{t.pos}}"></span>
-<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
-<span style="font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase">{{t.label}}</span>
-<span style="font-weight: 800; font-size: 16px; line-height: 20px">{{t.value}}</span>
-</span>
-</button>
-</sc-for>
-</div>
-<p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 700">Ahora eliges: {{targetHint}}</p>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(48px, 1fr)); gap: 8px">
-<sc-for list="{{colors}}" as="k" hint-placeholder-count="42">
-<button class="wopt wsw" type="button" onClick="{{k.pick}}" aria-pressed="{{k.pressed}}" aria-label="{{k.name}}" title="{{k.name}}" style="width: 100%; aspect-ratio: 1 / 1; min-height: 44px; border-radius: 50%; padding: 0; border: 3px solid {{k.ring}}; box-shadow: {{k.shadow}}; background-position: {{k.pos}}"></button>
-</sc-for>
-</div>
-</fieldset>
-
-<!-- 3 MASCOTA -->
-<fieldset style="margin: 0; border: 2px solid #EFE4D4; background: #FFFFFF; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 10px; min-width: 0">
-<legend style="padding: 0 8px; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 22px; line-height: 26px"><span style="display: inline-flex; width: 30px; height: 30px; border-radius: 10px; background: #75D6C0; align-items: center; justify-content: center; font-size: 17px; margin-right: 8px">3</span>Tu mascota</legend>
-<label for="mascota" style="font-weight: 700; font-size: 16px">¿Cómo se llama?</label>
-<input id="mascota" type="text" maxlength="30" autocomplete="off" value="{{petName}}" onInput="{{onPetName}}" placeholder="Ej. Nala" style="min-height: 52px; box-sizing: border-box; border: 2px solid #28314D; border-radius: 14px; padding: 10px 16px; font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 22px; color: #28314D; background: #FFF9F0">
-<span style="font-size: 14px; line-height: 20px; color: #5B6380">{{letHint}}</span>
-<p style="margin: 0; display: flex; align-items: flex-start; gap: 10px; background: #FFF4D1; border-radius: 14px; padding: 12px 14px; font-size: 14px; line-height: 20px; font-weight: 700"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#28314D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 0"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg><span>Los colores de las letras son según disponibilidad y no son personalizables. En Wuf! elegimos la combinación que mejor contraste con los colores de tu collar.</span></p>
-</fieldset>
-
-
 
 <!-- 4 PLACA -->
 <fieldset style="margin: 0; border: 2px solid #EFE4D4; background: #FFFFFF; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 14px; min-width: 0">
@@ -219,6 +208,12 @@ button{font-family:inherit;cursor:pointer}
 <p style="margin: 0; font-size: 14px; line-height: 20px; color: #5B6380">Las distancias se miden desde la zona UACH Norte. ¿No sabes en qué zona estás? Mándanos tu ubicación por Instagram y te decimos.</p>
 </fieldset>
 
+
+</div>
+
+<!-- OPTIONS COLUMN -->
+<div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 20px; position: sticky; top: 16px; align-self: flex-start">
+
 <!-- ENVIAR -->
 <div style="background: #FF6B85; border-radius: 28px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
 <h2 style="margin: 0; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 26px; line-height: 30px">¡Listo! Mándanos tu pedido</h2>
@@ -259,16 +254,21 @@ button{font-family:inherit;cursor:pointer}
 </div>
 </template>
 <script src="assets/js/runtime.js"></script>
+<script src="assets/js/inventario.js"></script>
 <script>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { size: 'M', custom: '', a: 'Lila', b: 'Rosa pastel', target: 'a', keychain: false, petName: '', placa: false, zone: null, copied: '' };
+    this.state = { inv: null, style: null, size: 'M', custom: '', a: 'Lila', b: 'Rosa pastel', target: 'a', keychain: false, petName: '', placa: false, zone: null, copied: '' };
+  }
+  componentDidMount() {
+    var self = this;
+    if (window.loadInventario) window.loadInventario().then(function (inv) { self.setState({ inv: inv }); }, function (e) { console.warn('Inventario: se usa la lista de respaldo.', e); });
   }
   renderVals() {
     var self = this, st = this.state;
     var INK = '#28314D';
-    var COLORS = [
+    var BASE = [
       ['Vino','#7A1F35'],['Rojo','#D7262E'],['Azul rey','#1747C9'],['Marino','#1C2747'],['Negro','#1A1A1A'],['Amarillo','#F5B915'],
       ['Rojo intenso','#E8141F'],['Naranja','#F26B1D'],['Azul','#1E7FD8'],['Azul turquesa','#1FA9DE'],['Gris oscuro','#55575C'],['Amarillo neón','#F2E51B'],
       ['Coral','#F5506A'],['Naranja neón','#FF6A13'],['Azul cielo','#8CC4EC'],['Gris','#9A9B9E'],['Verde limón','#8FD614'],['Verde neón','#4BE01F'],
@@ -277,12 +277,35 @@ class Component extends DCLogic {
       ['Durazno','#F49A8C'],['Blanco','#F7F7F5'],['Verde','#109A4A'],['Lila jaspeado','#9077D6','repeating-linear-gradient(45deg,#6B4BC4 0 5px,#FFFFFF 5px 8px)'],['Camuflaje verde','#4A5636','repeating-linear-gradient(45deg,#3F4A2E 0 4px,#7A8A5A 4px 8px,#5A3A2A 8px 11px)'],['Neón multicolor','#FF2D95','conic-gradient(#FF2D95,#F2E51B,#4BE01F,#1FA9DE,#FF2D95)'],
       ['Beige','#E6D2B5'],['Caqui','#7D6646'],['Menta','#6FDCC4'],['Dorado/olivo','#A88B3A'],['Café','#6E3B1E'],['Café claro','#B58660']
     ];
-    function find(n) { for (var i = 0; i < COLORS.length; i++) if (COLORS[i][0] === n) return COLORS[i]; return COLORS[0]; }
-    function pos(n) { var i = 0; for (var j = 0; j < COLORS.length; j++) if (COLORS[j][0] === n) i = j; return ((i % 6) * 20) + '% ' + (Math.floor(i / 6) * 100 / 6).toFixed(4) + '%'; }
-    var A = find(st.a), B = find(st.b);
+    // Inventario: la hoja de Google si cargó, si no la lista base
+    var inv = st.inv;
+    function baseIdx(n) { var k = String(n).toLowerCase(); for (var i = 0; i < BASE.length; i++) if (BASE[i][0].toLowerCase() === k) return i; return -1; }
+    var COLORS = (inv && inv.cords.length ? inv.cords.filter(function (c) { return c.available; }).map(function (c) {
+      var bi = baseIdx(c.name);
+      return { name: c.name, hex: c.hex || (bi >= 0 ? BASE[bi][1] : '#9A9B9E'), photo: c.photo, idx: bi };
+    }) : BASE.map(function (b, i) { return { name: b[0], hex: b[1], photo: null, idx: i }; }));
+    if (!COLORS.length) COLORS = BASE.map(function (b, i) { return { name: b[0], hex: b[1], photo: null, idx: i }; });
+    function find(n) { for (var i = 0; i < COLORS.length; i++) if (COLORS[i].name === n) return COLORS[i]; return null; }
+    function sw(c) {
+      if (c.photo) return 'background-image: url(' + c.photo + '); background-size: cover; background-position: center';
+      if (c.idx < 0) return 'background-image: none; background-color: ' + c.hex;
+      return 'background-position: ' + ((c.idx % 6) * 20) + '% ' + (Math.floor(c.idx / 6) * 100 / 6).toFixed(4) + '%';
+    }
+    var A = find(st.a) || COLORS[0];
+    var B = find(st.b) || COLORS.filter(function (c) { return c !== A; })[0] || A;
+    var aN = A.name, bN = B.name;
 
     var SIZES = [['CH','20–28 cm',170],['M','29–38 cm',185],['G','39–48 cm',200],['XG','49–60 cm',215]];
-    var PLACA = 180, LETRA = 5;
+    var PLACA = 180;
+    var STYLES = inv && inv.styles.length ? inv.styles.filter(function (y) { return y.available && y.price != null; }) : [];
+    if (!STYLES.length) STYLES = [{ name: 'Letras surtidas', price: 5, desc: '' }];
+    var style = STYLES.filter(function (y) { return y.name === st.style; })[0] || STYLES[0];
+    var LETRA = style.price;
+    var styleOpts = STYLES.map(function (y) {
+      var on = y === style;
+      return { name: y.name, sub: '$' + y.price + ' por letra', pressed: on ? 'true' : 'false', border: on ? INK : '#EFE4D4', bg: on ? '#E0F6F0' : '#FFFFFF',
+        pick: function () { self.setState({ style: y.name, copied: '' }); } };
+    });
     var sizes = SIZES.concat([['Otra', 'Tú la escribes', null]]).map(function (s) {
       var on = st.size === s[0];
       return { id: s[0], range: s[1], price: s[2] ? '$' + s[2] : 'Calculado', pressed: on ? 'true' : 'false', border: on ? INK : '#EFE4D4', bg: on ? '#EEE8FB' : '#FFFFFF',
@@ -310,8 +333,8 @@ class Component extends DCLogic {
     }
 
     var targets = [
-      { key: 'a', label: 'Color principal', value: st.a, pos: pos(st.a) },
-      { key: 'b', label: 'Color de contraste', value: st.b, pos: pos(st.b) }
+      { key: 'a', label: 'Color principal', value: aN, sw: sw(A) },
+      { key: 'b', label: 'Color de contraste', value: bN, sw: sw(B) }
     ].map(function (t) {
       var on = st.target === t.key;
       return Object.assign(t, { pressed: on ? 'true' : 'false', border: on ? INK : '#EFE4D4', bg: on ? '#FFF4D1' : '#FFFFFF',
@@ -319,12 +342,12 @@ class Component extends DCLogic {
     });
 
     var colors = COLORS.map(function (c) {
-      var isA = st.a === c[0], isB = st.b === c[0], on = isA || isB;
-      return { name: c[0] + (isA ? ' (principal)' : isB ? ' (contraste)' : ''), pos: pos(c[0]), pressed: on ? 'true' : 'false',
+      var isA = aN === c.name, isB = bN === c.name, on = isA || isB;
+      return { name: c.name + (isA ? ' (principal)' : isB ? ' (contraste)' : ''), sw: sw(c), pressed: on ? 'true' : 'false',
         ring: on ? INK : 'rgba(40,49,77,.15)', shadow: on ? '0 0 0 3px #FFFFFF, 0 0 0 5px ' + INK : 'none',
         pick: function () {
-          if (st.target === 'a') self.setState({ a: c[0], target: 'b', copied: '' });
-          else self.setState({ b: c[0], copied: '' });
+          if (st.target === 'a') self.setState({ a: c.name, target: 'b', copied: '' });
+          else self.setState({ b: c.name, copied: '' });
         } };
     });
 
@@ -370,9 +393,9 @@ class Component extends DCLogic {
     var summary = '¡Hola Wuf! Quiero personalizar un collar:\n' +
       '• Mascota: ' + (pet || 'por definir') + '\n' +
       '• Medida: ' + sizeLabel + '\n' +
-      '• Colores: ' + st.a + ' (principal) + ' + st.b + ' (contraste)\n' +
+      '• Colores: ' + aN + ' (principal) + ' + bN + ' (contraste)\n' +
       '• Plaquita solidaria: ' + (st.placa ? 'sí, con "' + (pet || 'nombre por definir') + '" (+$' + PLACA + ', 100% para Vida Animal CUU)' : 'no') + '\n' +
-      '• Letras: ' + nLet + ' × $' + LETRA + ' = $' + letCost + '\n' +
+      '• Letras (' + style.name.toLowerCase() + '): ' + nLet + ' × $' + LETRA + ' = $' + letCost + '\n' +
       '• Envío: ' + shipSummary + '\n' +
       '• Total: $' + total + ' MXN' + (zSel && !ship ? ' + envío' : '');
     var placaText = (pet || 'SU NOMBRE').toUpperCase();
@@ -389,16 +412,16 @@ class Component extends DCLogic {
     return {
       sizes: sizes, isCustom: isCustom, customHint: customHint, custom: st.custom, sizeLabel: sizeLabel,
       targets: targets, targetHint: st.target === 'a' ? 'color principal' : 'color de contraste',
-      colors: colors, colorA: st.a, colorB: st.b,
-      hexA: A[1], hexB: B[1], posA: pos(st.a), posB: pos(st.b),
+      colors: colors, colorA: aN, colorB: bN, multiStyle: STYLES.length > 1, styleOpts: styleOpts,
+      hexA: A.hex, hexB: B.hex, swA: sw(A), swB: sw(B),
       keychain: st.keychain, keychainLabel: st.keychain ? 'Sí, a juego' : 'No',
-      previewLabel: 'Foto del collar recoloreada en ' + st.a + ' y ' + st.b + '',
+      previewLabel: 'Foto del collar recoloreada en ' + aN + ' y ' + bN + '',
       summary: summary,
       copyLabel: st.copied === 'ok' ? '¡Copiado!' : st.copied === 'fail' ? 'Selecciona el texto y cópialo' : 'Copiar pedido',
       hasName: false, noName: true, beads: beads, beadGap: (0.4 * scale).toFixed(2) + 'cqw',
       previewNote: 'El nombre de la foto es solo de ejemplo. Los colores son aproximados al paracord real.',
       petName: st.petName, petLabel: pet || 'Sin nombre aún',
-      letHint: nLet ? 'Su nombre en letras: ' + nLet + (nLet === 1 ? ' letra' : ' letras') + ' × $' + LETRA + ' = $' + letCost + ' MXN.' : 'Su nombre va en letras sobre el collar: $5 MXN por letra.',
+      letHint: nLet ? style.name + ': ' + nLet + (nLet === 1 ? ' letra' : ' letras') + ' × $' + LETRA + ' = $' + letCost + ' MXN.' : 'Su nombre va en letras sobre el collar (' + style.name.toLowerCase() + '): $' + LETRA + ' MXN por letra.',
       placa: st.placa, placaOpts: placaOpts, placaText: placaText, placaSize: placaSize,
       placaLabel: 'Placa de hueso azul grabada con ' + placaText,
       placaCardNote: st.placa ? 'Incluida en tu pedido. Se dona al 100% a Vida Animal CUU.' : 'Agrégala en el paso 4 por $180. Se dona al 100% a Vida Animal CUU.',
