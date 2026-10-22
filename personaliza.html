@@ -69,8 +69,8 @@ button{font-family:inherit;cursor:pointer}
 </div>
 <div role="img" aria-label="{{previewLabel}}" style="position: relative; width: 100%; aspect-ratio: 1185 / 500; border-radius: 22px; overflow: hidden; isolation: isolate; box-shadow: 0 18px 40px -16px rgba(40,49,77,.35); background: #6B3A1E; container-type: inline-size">
 <img src="assets/img/collar_base.jpg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block">
-<div class="wlayer wmaskA" style="background-color: {{hexA}}"></div>
-<div class="wlayer wmaskB" style="background-color: {{hexB}}"></div>
+<div class="wlayer wmaskA" style="background: {{patA}}"></div>
+<div class="wlayer wmaskB" style="background: {{patB}}"></div>
 </div>
 <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 0 6px 4px">
 <span style="display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; border-radius: 999px; padding: 6px 12px 6px 6px; font-size: 14px; line-height: 18px; font-weight: 700"><span class="wsw" aria-hidden="true" style="width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid rgba(40,49,77,.25); {{swA}}"></span>Principal: {{colorA}}</span>
@@ -81,8 +81,8 @@ button{font-family:inherit;cursor:pointer}
 <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; background: #FFFFFF; border-radius: 22px; padding: 14px">
 <div role="img" aria-label="{{placaLabel}}" style="position: relative; flex: 0 1 260px; min-width: 180px; aspect-ratio: 510 / 410; border-radius: 16px; overflow: hidden; container-type: inline-size; isolation: isolate; background: #6B3A1E">
 <img src="assets/img/placa_base.jpg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block">
-<div class="wlayer wpmA" style="background-color: {{hexA}}"></div>
-<div class="wlayer wpmB" style="background-color: {{hexB}}"></div>
+<div class="wlayer wpmA" style="background: {{patA}}"></div>
+<div class="wlayer wpmB" style="background: {{patB}}"></div>
 <span aria-hidden="true" style="position: absolute; left: 49.8%; top: 57.6%; transform: translate(-50%, -50%) rotate(1.85deg) scaleX(1.2); white-space: nowrap; font-family: Arimo, Arial, Helvetica, sans-serif; font-weight: 700; font-size: {{placaSize}}; line-height: 1; letter-spacing: .1em; padding-left: .1em; background: linear-gradient(180deg, #E6F7FF 0%, #C4EBFE 55%, #A9DCF3 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: #C4EBFE; opacity: .96; filter: drop-shadow(0 -0.5px 0 rgba(0,40,90,.55)) drop-shadow(0 .7px 0 rgba(255,255,255,.35)) blur(.25px)">{{placaText}}</span>
 </div>
 <div style="flex: 1 1 160px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
@@ -387,6 +387,15 @@ class Component extends DCLogic {
     }) : BASE.map(function (b, i) { return { name: b[0], hex: b[1], photo: null, idx: i }; }));
     if (!COLORS.length) COLORS = BASE.map(function (b, i) { return { name: b[0], hex: b[1], photo: null, idx: i }; });
     function find(n) { for (var i = 0; i < COLORS.length; i++) if (COLORS[i].name === n) return COLORS[i]; return null; }
+    // Fondo de la vista previa: los cordones con patrón (multicolor, camuflaje, jaspeado) se ven con su patrón
+    var PREV = {
+      'neón multicolor': 'repeating-linear-gradient(62deg,#FF2D95 0 2.4cqw,#F2E51B 2.4cqw 4.8cqw,#4BE01F 4.8cqw 7.2cqw,#1FA9DE 7.2cqw 9.6cqw)',
+      'multicolor': 'repeating-linear-gradient(62deg,#E8141F 0 2.4cqw,#F5B915 2.4cqw 4.8cqw,#4BE01F 4.8cqw 7.2cqw,#1E7FD8 7.2cqw 9.6cqw,#8A62D6 9.6cqw 12cqw,#E81C7A 12cqw 14.4cqw)',
+      'camuflaje amarillo': 'repeating-linear-gradient(55deg,#1A1A1A 0 1.6cqw,#F2D21B 1.6cqw 3cqw)',
+      'lila jaspeado': 'repeating-linear-gradient(55deg,#6B4BC4 0 1.6cqw,#FFFFFF 1.6cqw 2.6cqw)',
+      'camuflaje verde': 'repeating-linear-gradient(55deg,#3F4A2E 0 1.4cqw,#7A8A5A 1.4cqw 2.8cqw,#5A3A2A 2.8cqw 4cqw)'
+    };
+    function pat(c) { return PREV[String(c.name).toLowerCase()] || c.hex; }
     function sw(c) {
       if (c.photo) return 'background-image: url(' + c.photo + '); background-size: cover; background-position: center';
       if (c.idx < 0) return 'background-image: none; background-color: ' + c.hex;
@@ -525,7 +534,7 @@ class Component extends DCLogic {
       sizes: sizes, isCustom: isCustom, customHint: customHint, custom: st.custom, sizeLabel: sizeLabel,
       targets: targets, targetHint: st.target === 'a' ? 'color principal' : 'color de contraste',
       colors: colors, colorA: aN, colorB: bN, multiStyle: STYLES.length > 1, styleOpts: styleOpts,
-      hexA: A.hex, hexB: B.hex, swA: sw(A), swB: sw(B),
+      hexA: A.hex, hexB: B.hex, patA: pat(A), patB: pat(B), swA: sw(A), swB: sw(B),
       keychain: st.keychain, keychainLabel: st.keychain ? 'Sí, a juego' : 'No',
       previewLabel: 'Foto del collar recoloreada en ' + aN + ' y ' + bN + '',
       summary: summary,
