@@ -23,13 +23,22 @@ assets/
 
 Cada página tiene su contenido dentro de `<template id="tpl">` y su lógica al final, en la clase `Component`.
 
+## Inventario (Google Sheets)
+
+Los cordones y los estilos de letra se manejan en la hoja **Inventario Wuf!** de Google Drive, sin tocar el código:
+
+- **Cordones:** desmarcar *Disponible* oculta el color en las dos páginas. Un color nuevo necesita su *Tono para la vista previa* (#RRGGBB) y, de preferencia, un enlace a su foto en Drive.
+- **Estilos de letra:** nombre, precio por letra y disponibilidad. Si hay más de un estilo disponible, la página deja elegirlo.
+
+La hoja debe estar compartida como **Cualquier persona con el enlace: Lector**. El ID de la hoja está en `assets/js/inventario.js`. Si la hoja no se puede leer, las páginas usan la lista de respaldo que traen dentro (`BASE` en `personaliza.html`).
+
 ## Cambios frecuentes
 
 En `personaliza.html`, dentro de la clase `Component`:
 
 - **Precios de tallas:** `var SIZES = [['CH','20–28 cm',170], ...]`
-- **Placa y precio por letra:** `var PLACA = 180, LETRA = 5;`
-- **Colores de paracord:** la lista `COLORS`. Va en el mismo orden que la carta `assets/img/sprite.jpg`.
+- **Precio de la placa:** `var PLACA = 180;`
+- **Lista de respaldo de colores:** `BASE`. Va en el mismo orden que la carta `assets/img/sprite.jpg`.
 - **Precios de envío por zona:** el último renglón del script, `mountPage(Component, {"zona1": 30, ...})`
 - **Zonas y distancias:** la lista `ZONES`
 
