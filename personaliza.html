@@ -51,7 +51,7 @@ button{font-family:inherit;cursor:pointer}
 <section style="max-width: 1240px; margin: 0 auto; padding: clamp(16px, 4vw, 40px) clamp(16px, 4vw, 40px) clamp(32px, 4vw, 48px); display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 48px">
 <div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
 <p style="margin: 0; font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase">Diseña su Wuf!</p>
-<h1 style="margin: 0; font-family: 'Baloo 2', Nunito, sans-serif; font-weight: 800; font-size: clamp(40px, 5.6vw, 68px); line-height: 1; letter-spacing: -.01em">Escoge sus colores y míralo <span style="background: #FFCF46; padding: 0 .12em; border-radius: 14px">en vivo</span>.</h1>
+<h1 style="margin: 0; font-family: 'Baloo 2', Nunito, sans-serif; font-weight: 800; font-size: clamp(40px, 5.6vw, 68px); line-height: 1.12; letter-spacing: -.01em">Escoge sus colores y míralo <span style="display: inline-block; background: #FFCF46; padding: 0 .14em .06em; border-radius: 14px; line-height: 1.05; white-space: nowrap">en vivo</span>.</h1>
 </div>
 <p style="margin: 0; flex: 1 1 320px; max-width: 28em; font-size: 19px; line-height: 30px; color: #4A5270">Elige la medida y dos colores de paracord. Al final te damos el pedido listo para mandarlo por Instagram.</p>
 </section>
@@ -93,12 +93,12 @@ button{font-family:inherit;cursor:pointer}
 <!-- 2 COLORES -->
 <fieldset style="margin: 0; border: 2px solid #EFE4D4; background: #FFFFFF; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
 <legend style="padding: 0 8px; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 22px; line-height: 26px"><span style="display: inline-flex; width: 30px; height: 30px; border-radius: 10px; background: #FFCF46; align-items: center; justify-content: center; font-size: 17px; margin-right: 8px">1</span>Colores del tejido</legend>
-<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px">
 <sc-for list="{{targets}}" as="t" hint-placeholder-count="2">
 <button class="wopt" type="button" onClick="{{t.pick}}" aria-pressed="{{t.pressed}}" style="min-height: 64px; border-radius: 16px; border: 2px solid {{t.border}}; background: {{t.bg}}; color: #28314D; padding: 10px 12px; display: flex; align-items: center; gap: 12px; text-align: left">
 <span class="wsw" aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgba(40,49,77,.2); {{t.sw}}"></span>
 <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
-<span style="font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase">{{t.label}}</span>
+<span style="font-size: 12px; line-height: 16px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase">{{t.label}}</span>
 <span style="font-weight: 800; font-size: 16px; line-height: 20px">{{t.value}}</span>
 </span>
 </button>
