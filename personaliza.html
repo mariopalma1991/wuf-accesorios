@@ -412,10 +412,10 @@ class Component extends DCLogic {
     var SIZES = [['CH','20–28 cm',170],['M','29–38 cm',185],['G','39–48 cm',200],['XG','49–60 cm',215]];
     var PLACA = 180;
     var STYLE_BASE = [
-      { name: 'Classic', price: 5, photo: '', legend: 'Son las letras de la foto de muestra', tile: '#EEE8FB', desc: 'Las de siempre: brillantes, redonditas y en colores surtidos.' },
-      { name: 'WUF! Pearl', price: 5, photo: 'assets/img/letras_pearl.jpg', tile: '#EEE8FB', desc: 'Las perladas, con acabado brillante y delicado. Son las más elegantes.' },
-      { name: 'WUF! Candy', price: 5, photo: 'assets/img/letras_candy.jpg', tile: '#FDE7EE', desc: 'Las de colores vibrantes y efecto tornasol. Divertidas y llamativas.' },
-      { name: 'WUF! Pop', price: 5, photo: 'assets/img/letras_pop.jpg', tile: '#E0F6F0', desc: 'Las de base blanca y letras de colores. Modernas, juveniles y muy originales.' }
+      { name: 'WUF! Classic', price: 5, photo: 'assets/img/letras_classic.jpg', tile: '#F4F4F7', desc: 'Son las letras de la foto de muestra.' },
+      { name: 'WUF! Pearl', price: 5, photo: 'assets/img/letras_pearl.jpg', tile: '#F4F4F7', desc: 'Las perladas, con acabado brillante y delicado. Son las más elegantes.' },
+      { name: 'WUF! Candy', price: 5, photo: 'assets/img/letras_candy.jpg', tile: '#F4F4F7', desc: 'Las de colores vibrantes y efecto tornasol. Divertidas y llamativas.' },
+      { name: 'WUF! Pop', price: 5, photo: 'assets/img/letras_pop.jpg', tile: '#F4F4F7', desc: 'Las de base blanca y letras de colores. Modernas, juveniles y muy originales.' }
     ];
     var STYLES = inv && inv.styles.length ? inv.styles.filter(function (y) { return y.available && y.price != null; }) : STYLE_BASE.slice();
     if (!STYLES.length) STYLES = STYLE_BASE.slice();
@@ -427,7 +427,7 @@ class Component extends DCLogic {
     var LETRA = style.price;
     var styleOpts = STYLES.map(function (y) {
       var on = y === style;
-      return { name: y.name, desc: y.desc, photo: y.photo || 'assets/img/letras_pearl.jpg', tile: y.tile, legend: y.legend, ratio: y.photo ? '4 / 3' : '16 / 7', imgDisplay: y.photo ? 'block' : 'none', noPhotoDisplay: y.photo ? 'none' : 'flex',
+      return { name: y.name, desc: y.desc, photo: y.photo || 'assets/img/letras_pearl.jpg', tile: y.tile, legend: y.legend, ratio: y.photo ? '16 / 10' : '16 / 7', imgDisplay: y.photo ? 'block' : 'none', noPhotoDisplay: y.photo ? 'none' : 'flex',
         sub: '$' + y.price + ' por letra', pressed: on ? 'true' : 'false', border: on ? INK : '#EFE4D4', bg: on ? '#E0F6F0' : '#FFFFFF',
         pick: function () { self.setState({ style: y.name, copied: '' }); } };
     });
@@ -520,7 +520,7 @@ class Component extends DCLogic {
       '• Medida: ' + sizeLabel + '\n' +
       '• Colores: ' + aN + ' (principal) + ' + bN + ' (contraste)\n' +
       '• Plaquita solidaria: ' + (st.placa ? 'sí, con "' + (pet || 'nombre por definir') + '" (+$' + PLACA + ', 100% para Vida Animal CUU)' : 'no') + '\n' +
-      '• Letras (' + style.name.toLowerCase() + '): ' + nLet + ' × $' + LETRA + ' = $' + letCost + '\n' +
+      '• Letras (' + style.name + '): ' + nLet + ' × $' + LETRA + ' = $' + letCost + '\n' +
       '• Envío: ' + shipSummary + '\n' +
       '• Total: $' + total + ' MXN' + (zSel && !ship ? ' + envío' : '');
     var placaText = (pet || 'SU NOMBRE').toUpperCase();
@@ -546,7 +546,7 @@ class Component extends DCLogic {
       hasName: false, noName: true, beads: beads, beadGap: (0.4 * scale).toFixed(2) + 'cqw',
       previewNote: 'Imagen aproximada: los colores y el tejido pueden variar un poco en el collar real. El nombre de la foto es solo de ejemplo.',
       petName: st.petName, petLabel: pet || 'Sin nombre aún',
-      letHint: nLet ? style.name + ': ' + nLet + (nLet === 1 ? ' letra' : ' letras') + ' × $' + LETRA + ' = $' + letCost + ' MXN.' : 'Su nombre va en letras sobre el collar (' + style.name.toLowerCase() + '): $' + LETRA + ' MXN por letra.',
+      letHint: nLet ? style.name + ': ' + nLet + (nLet === 1 ? ' letra' : ' letras') + ' × $' + LETRA + ' = $' + letCost + ' MXN.' : 'Su nombre va en letras sobre el collar (' + style.name + '): $' + LETRA + ' MXN por letra.',
       placa: st.placa, placaOpts: placaOpts, placaText: placaText, placaSize: placaSize,
       placaLabel: 'Placa de hueso azul grabada con ' + placaText,
       placaCardNote: st.placa ? 'Incluida en tu pedido. Se dona al 100% a Vida Animal CUU.' : 'Agrégala en el paso 4 por $180. Se dona al 100% a Vida Animal CUU.',
