@@ -102,8 +102,10 @@ button{font-family:inherit;cursor:pointer}
 
 <!-- 3 MASCOTA -->
 <fieldset style="margin: 0; border: 2px solid #EFE4D4; background: #FFFFFF; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 10px; min-width: 0">
-<legend style="padding: 0 8px; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 22px; line-height: 26px"><span style="display: inline-flex; width: 30px; height: 30px; border-radius: 10px; background: #75D6C0; align-items: center; justify-content: center; font-size: 17px; margin-right: 8px">2</span>Tu mascota</legend>
-<label for="mascota" style="font-weight: 700; font-size: 16px">¿Cómo se llama?</label>
+<legend style="padding: 0 8px; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 22px; line-height: 26px"><span style="display: inline-flex; width: 30px; height: 30px; border-radius: 10px; background: #75D6C0; align-items: center; justify-content: center; font-size: 17px; margin-right: 8px">2</span>Tú y tu mascota</legend>
+<label for="cliente" style="font-weight: 700; font-size: 16px">Tu primer nombre</label>
+<input id="cliente" type="text" maxlength="30" autocomplete="given-name" value="{{clientName}}" onInput="{{onClientName}}" placeholder="Ej. Laura" style="min-height: 52px; box-sizing: border-box; border: 2px solid #28314D; border-radius: 14px; padding: 10px 16px; font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 22px; color: #28314D; background: #FFF9F0">
+<label for="mascota" style="font-weight: 700; font-size: 16px; margin-top: 6px">¿Cómo se llama tu mascota?</label>
 <input id="mascota" type="text" maxlength="30" autocomplete="off" value="{{petName}}" onInput="{{onPetName}}" placeholder="Ej. Nala" style="min-height: 52px; box-sizing: border-box; border: 2px solid #28314D; border-radius: 14px; padding: 10px 16px; font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 22px; color: #28314D; background: #FFF9F0">
 <sc-if value="{{multiStyle}}" hint-placeholder-val="{{ false }}">
 <span style="font-weight: 700; font-size: 16px">Estilo de letra</span>
@@ -274,7 +276,7 @@ button{font-family:inherit;cursor:pointer}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { inv: null, style: null, size: 'M', custom: '', a: 'Lila', b: 'Rosa pastel', target: 'a', keychain: false, petName: '', placa: false, zone: null, copied: '', addr: '', point: null, geoMsg: '', searching: false, sugs: [] };
+    this.state = { inv: null, style: null, size: 'M', custom: '', a: 'Lila', b: 'Rosa pastel', target: 'a', keychain: false, petName: '', clientName: '', placa: false, zone: null, copied: '', addr: '', point: null, geoMsg: '', searching: false, sugs: [] };
   }
   componentDidMount() {
     var self = this;
@@ -476,6 +478,7 @@ class Component extends DCLogic {
     });
 
     var pet = (st.petName || '').trim();
+    var client = (st.clientName || '').trim().split(/\s+/)[0] || '';
     var nLet = pet.replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9]/g, '').length;
     var letCost = nLet * LETRA;
     var LCOL = [['#F4F2EE','#FFFFFF','#BDB9B2'],['#1F4FD6','#5C86F2','#12318C'],['#F7801E','#FFB066','#B9520A'],['#E3262E','#FF6A6E','#9E1218'],
@@ -515,7 +518,7 @@ class Component extends DCLogic {
     ZONES.forEach(function (z, i) { rings['ring' + (i + 1)] = (st.zone === z[0]) ? z[4] : z[5]; });
     var shipSummary = zSel ? zSel[1] + (ship ? ' · $' + ship : ' · por confirmar') + (st.point ? ' (a ~' + st.point[2].toFixed(1) + ' km)' : '') : 'Elige tu zona';
     var summary = '¡Hola Wuf! Quiero personalizar un collar:\n' +
-      '• Mascota: ' + (pet || 'por definir') + '\n' +
+      '• ' + (client || 'Nombre por definir') + ' - Mascota: ' + (pet || 'por definir') + '\n' +
       '• Medida: ' + sizeLabel + '\n' +
       '• Colores: ' + aN + ' (principal) + ' + bN + ' (contraste)\n' +
       '• Plaquita solidaria: ' + (st.placa ? 'sí, con "' + (pet || 'nombre por definir') + '" (+$' + PLACA + ', 100% para Vida Animal CUU)' : 'no') + '\n' +
@@ -544,7 +547,7 @@ class Component extends DCLogic {
       copyLabel: st.copied === 'ok' ? '¡Copiado!' : st.copied === 'fail' ? 'Selecciona el texto y cópialo' : 'Copiar pedido',
       hasName: false, noName: true, beads: beads, beadGap: (0.4 * scale).toFixed(2) + 'cqw',
       previewNote: 'Imagen aproximada: los colores y el tejido pueden variar un poco en el collar real. El nombre de la foto es solo de ejemplo.',
-      petName: st.petName, petLabel: pet || 'Sin nombre aún',
+      clientName: st.clientName, petName: st.petName, petLabel: pet || 'Sin nombre aún',
       letHint: nLet ? style.name + ': ' + nLet + (nLet === 1 ? ' letra' : ' letras') + ' × $' + LETRA + ' = $' + letCost + ' MXN.' : 'Su nombre va en letras sobre el collar (' + style.name + '): $' + LETRA + ' MXN por letra.',
       placa: st.placa, placaOpts: placaOpts, placaText: placaText, placaSize: placaSize,
       placaLabel: 'Placa de hueso azul grabada con ' + placaText,
@@ -553,6 +556,7 @@ class Component extends DCLogic {
       totalLabel: '$' + total + ' MXN', zones: zones, shipSummary: shipSummary, addr: st.addr, geoMsg: st.geoMsg, waHref: 'https://wa.me/526144879916?text=' + encodeURIComponent(summary), hasSugs: st.sugs.length > 0, sugOpen: st.sugs.length > 0 ? 'true' : 'false', onKey: function (e) { self.onKey(e); }, sugs: st.sugs.map(function (g) { return { main: g.main, sub: g.sub, pick: function () { self.pickSug(g); } }; }), searchLabel: st.searching ? 'Buscando…' : 'Calcular zona', onAddr: function (e) { self.onAddr(e); }, onSearch: function () { self.onSearch(); }, ring1: rings.ring1, ring2: rings.ring2, ring3: rings.ring3, ring4: rings.ring4,
       priceBreakdown: (isCustom ? (cur[2] ? 'Collar medida especial $' + cur[2] : 'Collar: escribe su medida') : 'Collar talla ' + cur[0] + ' $' + cur[2]) + (nLet ? ' + ' + nLet + (nLet === 1 ? ' letra' : ' letras') + ' $' + letCost : '') + (st.placa ? ' + plaquita solidaria $' + PLACA : '') + (zSel ? (ship ? ' + envío $' + ship : ' + envío por confirmar') : ' + envío según zona') + '. Precios en pesos mexicanos.',
       placaHint: st.placa ? (pet ? 'Así se verá la placa con su nombre grabado:' : 'Escribe su nombre en el paso 2 para verlo en la placa.') : 'Placa de hueso con su nombre grabado, $180 MXN adicionales al collar.',
+      onClientName: function (e) { self.setState({ clientName: e.target.value, copied: '' }); },
       onPetName: function (e) { self.setState({ petName: e.target.value, copied: '' }); },
       onCustom: function (e) { self.setState({ custom: e.target.value, copied: '' }); },
       onKeychain: function (e) { self.setState({ keychain: !!e.target.checked, copied: '' }); },
