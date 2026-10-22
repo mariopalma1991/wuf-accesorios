@@ -395,7 +395,11 @@ class Component extends DCLogic {
       'lila jaspeado': 'repeating-linear-gradient(55deg,#6B4BC4 0 1.6cqw,#FFFFFF 1.6cqw 2.6cqw)',
       'camuflaje verde': 'repeating-linear-gradient(55deg,#3F4A2E 0 1.4cqw,#7A8A5A 1.4cqw 2.8cqw,#5A3A2A 2.8cqw 4cqw)'
     };
-    function pat(c) { return PREV[String(c.name).toLowerCase()] || c.hex; }
+    function pat(c) {
+      var k = String(c.name).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+      for (var n in PREV) if (n.normalize('NFD').replace(/[\u0300-\u036f]/g, '') === k) return PREV[n];
+      return c.hex;
+    }
     function sw(c) {
       if (c.photo) return 'background-image: url(' + c.photo + '); background-size: cover; background-position: center';
       if (c.idx < 0) return 'background-image: none; background-color: ' + c.hex;
