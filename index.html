@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wuf! accesorios · Collares con mucha personalidad</title>
+<meta name="description" content="Collares de paracord tejidos a mano en Chihuahua, personalizados con el nombre de tu perrito. Elige tus colores y pide tu Wuf!">
+<meta property="og:title" content="Wuf! accesorios · Collares con mucha personalidad">
+<meta property="og:description" content="Collares de paracord tejidos a mano en Chihuahua, personalizados con el nombre de tu perrito. Elige tus colores y pide tu Wuf!">
+<meta property="og:image" content="assets/img/nala.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#FF6B85">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFF9F0}
+a{color:#28314D}a:hover{color:#28314D}
+.wbtn{transition:transform .15s ease, background-color .15s ease, box-shadow .15s ease}
+.wbtn:hover{transform:translateY(-2px)}
+.wprimary:hover{background:#F2506D !important;box-shadow:0 6px 0 rgba(40,49,77,.18) !important}
+.wbtn:focus-visible,.wlink:focus-visible{outline:3px solid #28314D;outline-offset:3px}
+.wlink{text-decoration:none;background-image:linear-gradient(#FFCF46,#FFCF46);background-size:100% 4px;background-repeat:no-repeat;background-position:0 100%;transition:background-size .2s ease}
+.wlink:hover{background-size:100% 100%}
+.wcard{transition:transform .2s ease}
+.wcard:hover{transform:translateY(-4px) rotate(-.4deg)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="tpl">
+<div style="font-family: Nunito, system-ui, sans-serif; color: #28314D; background: #FFF9F0; min-height: 100vh; overflow-x: hidden">
+
+<!-- NAV -->
+<header style="position: relative; z-index: 2; max-width: 1240px; margin: 0 auto; padding: 20px clamp(16px, 4vw, 40px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<a href="#inicio" aria-label="Wuf! inicio" style="display: flex; align-items: center"><img src="assets/img/logo.png" alt="Wuf!" style="height: 56px; width: auto; display: block"></a>
+<nav aria-label="Principal" style="display: flex; flex-wrap: wrap; align-items: center; gap: clamp(12px, 3vw, 32px); font-weight: 700; font-size: 16px">
+<a class="wlink" href="#collares" style="padding: 2px 2px">Collares</a>
+<a class="wlink" href="#colores" style="padding: 2px 2px">Colores</a>
+<a class="wlink" href="#como-pedir" style="padding: 2px 2px">Cómo pedir</a>
+<a class="wbtn wprimary" href="personaliza.html" style="background: #FF6B85; color: #28314D; text-decoration: none; padding: 12px 22px; border-radius: 999px; font-weight: 800; box-shadow: 0 4px 0 rgba(40,49,77,.14); min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center">Pedir mi Wuf!</a>
+</nav>
+</header>
+
+<!-- HERO -->
+<section id="inicio" style="position: relative; max-width: 1240px; margin: 0 auto; padding: clamp(24px, 5vw, 64px) clamp(16px, 4vw, 40px) clamp(64px, 8vw, 112px); display: flex; flex-wrap: wrap; align-items: center; gap: clamp(32px, 5vw, 72px)">
+<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+<p style="margin: 0; font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase">Tejidos a mano en Chihuahua</p>
+<h1 style="margin: 0; font-family: 'Baloo 2', Nunito, sans-serif; font-weight: 800; font-size: clamp(44px, 6.4vw, 76px); line-height: 1; letter-spacing: -.01em">Un collar con <span style="background: #FFCF46; padding: 0 .12em; border-radius: 14px; box-decoration-break: clone">su nombre</span> y mucha personalidad.</h1>
+<p style="margin: 0; font-size: 19px; line-height: 30px; max-width: 30em; color: #4A5270">Elige dos colores de paracord, dinos cómo se llama tu perrito y lo tejemos para él. Resistente, cómodo y tan único como quien lo usa.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 8px">
+<a class="wbtn wprimary" href="personaliza.html" style="background: #FF6B85; color: #28314D; text-decoration: none; padding: 16px 28px; border-radius: 999px; font-weight: 800; font-size: 18px; box-shadow: 0 4px 0 rgba(40,49,77,.14); min-height: 52px; box-sizing: border-box; display: inline-flex; align-items: center">Diseña su Wuf!</a>
+<a class="wbtn" href="#colores" style="background: #FFFFFF; color: #28314D; text-decoration: none; padding: 14px 26px; border-radius: 999px; font-weight: 800; font-size: 18px; border: 2px solid #28314D; min-height: 52px; box-sizing: border-box; display: inline-flex; align-items: center">Ver los 42 colores</a>
+</div>
+</div>
+<div style="flex: 1 1 440px; min-width: 0; position: relative; padding: 24px 0 24px 24px">
+<div aria-hidden="true" style="position: absolute; inset: 0 0 0 40px; background: #EEE8FB; border-radius: 62% 38% 55% 45% / 48% 58% 42% 52%"></div>
+<div aria-hidden="true" style="position: absolute; width: 120px; height: 120px; right: -10px; top: -14px; background: #FFCF46; border-radius: 50% 42% 58% 50%"></div>
+<img src="assets/img/nala.jpg" alt="Collar Wuf! tejido en rosa pastel y lila con las letras N-A-L-A" style="position: relative; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 32px; display: block; box-shadow: 0 18px 40px -16px rgba(40,49,77,.35)">
+<div style="position: absolute; left: 0; bottom: 0; background: #FFFFFF; border: 2px solid #28314D; border-radius: 20px; padding: 12px 18px; box-shadow: 0 4px 0 rgba(40,49,77,.14); transform: rotate(-4deg); display: flex; flex-direction: column; gap: 2px">
+<span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 22px; line-height: 24px">NALA</span>
+<span style="font-size: 14px; line-height: 18px; font-weight: 600">Rosa pastel + Lila</span>
+</div>
+</div>
+</section>
+
+<!-- STRIP -->
+<div style="background: #28314D; color: #FFF9F0">
+<div style="max-width: 1240px; margin: 0 auto; padding: 20px clamp(16px, 4vw, 40px); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 32px; font-weight: 700; font-size: 16px">
+<span style="display: flex; align-items: center; gap: 10px"><span aria-hidden="true" style="width: 12px; height: 12px; border-radius: 50%; background: #FF6B85"></span>Tejido a mano, uno por uno</span>
+<span style="display: flex; align-items: center; gap: 10px"><span aria-hidden="true" style="width: 12px; height: 12px; border-radius: 50%; background: #FFCF46"></span>42 colores de paracord</span>
+<span style="display: flex; align-items: center; gap: 10px"><span aria-hidden="true" style="width: 12px; height: 12px; border-radius: 50%; background: #75D6C0"></span>Personalizado con su nombre</span>
+<span style="display: flex; align-items: center; gap: 10px"><span aria-hidden="true" style="width: 12px; height: 12px; border-radius: 50%; background: #A58BE7"></span>Pedidos por mensaje directo</span>
+</div>
+</div>
+
+<!-- COLLARES -->
+<section id="collares" style="max-width: 1240px; margin: 0 auto; padding: clamp(64px, 8vw, 104px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 40px">
+<div style="display: flex; flex-direction: column; gap: 12px; max-width: 640px">
+<p style="margin: 0; font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase">Un Wuf! para cada perrito</p>
+<h2 style="margin: 0; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: clamp(34px, 4.2vw, 48px); line-height: 1.05">Dos colores, un nombre. Cero collares iguales.</h2>
+</div>
+<p style="margin: 0; font-size: 17px; line-height: 27px; max-width: 26em; color: #4A5270">Así han quedado algunos. Cada combinación sale de lo que tú imaginas para tu perrito.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px">
+<sc-for list="{{collars}}" as="c" hint-placeholder-count="4">
+<article class="wcard" style="background: #FFFFFF; border: 2px solid #EFE4D4; border-radius: 24px; box-shadow: 0 4px 0 rgba(40,49,77,.10); overflow: hidden; display: flex; flex-direction: column">
+<img src="{{c.img}}" alt="{{c.alt}}" style="width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block">
+<div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px">
+<h3 style="margin: 0; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 24px; line-height: 26px">{{c.name}}</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="display: inline-flex; align-items: center; gap: 8px; background: #FFF9F0; border-radius: 999px; padding: 6px 12px 6px 6px; font-size: 14px; line-height: 18px; font-weight: 700"><span aria-hidden="true" style="width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid rgba(40,49,77,.25); background: {{c.hexA}}"></span>{{c.colorA}}</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; background: #FFF9F0; border-radius: 999px; padding: 6px 12px 6px 6px; font-size: 14px; line-height: 18px; font-weight: 700"><span aria-hidden="true" style="width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid rgba(40,49,77,.25); background: {{c.hexB}}"></span>{{c.colorB}}</span>
+</div>
+</div>
+</article>
+</sc-for>
+</div>
+
+<!-- LLAVERO -->
+<div style="background: #FFF4D1; border-radius: 32px; display: flex; flex-wrap: wrap; align-items: stretch; overflow: hidden">
+<img src="assets/img/rocky.jpg" alt="Llavero Wuf! en naranja y verde con las letras R-O-C-K-Y" style="flex: 1 1 320px; min-width: 0; max-height: 420px; object-fit: cover; display: block">
+<div style="flex: 999 1 380px; min-width: 0; padding: clamp(28px, 4vw, 56px); display: flex; flex-direction: column; justify-content: center; gap: 16px">
+<p style="margin: 0; font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase">También para ti</p>
+<h3 style="margin: 0; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: clamp(30px, 3.4vw, 40px); line-height: 1.05">Llavero Wuf!, a juego con su collar.</h3>
+<p style="margin: 0; font-size: 17px; line-height: 27px; max-width: 30em; color: #4A5270">El mismo tejido y las mismas letras, para que lleves su nombre contigo. Pídelo junto con su collar o por separado.</p>
+<div><a class="wlink" href="https://ig.me/m/wuf.accesorios" style="font-weight: 800; font-size: 17px; padding: 2px">Pregunta por el llavero →</a></div>
+</div>
+</div>
+</section>
+
+<!-- COLORES -->
+<section id="colores" style="background: #FFFFFF; border-top: 2px solid #EFE4D4; border-bottom: 2px solid #EFE4D4">
+<div style="max-width: 1240px; margin: 0 auto; padding: clamp(64px, 8vw, 104px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 32px 56px">
+<div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<p style="margin: 0; font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase">Tú eliges los colores</p>
+<h2 style="margin: 0; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: clamp(34px, 4.2vw, 48px); line-height: 1.05">42 colores para combinar como quieras.</h2>
+<p style="margin: 0; font-size: 17px; line-height: 27px; max-width: 30em; color: #4A5270">Escoge un color principal y uno de contraste. Si no te decides, te ayudamos a encontrar la combinación que va con su personalidad.</p>
+</div>
+<img src="assets/img/cuerdas.jpg" alt="Madejas de paracord de todos los colores ordenadas sobre una mesa" style="flex: 1 1 460px; min-width: 0; width: 100%; aspect-ratio: 1280 / 822; object-fit: cover; border-radius: 24px; display: block; box-shadow: 0 18px 40px -16px rgba(40,49,77,.3)">
+</div>
+<ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px">
+<sc-for list="{{colors}}" as="k" hint-placeholder-count="42">
+<li style="display: flex; align-items: center; gap: 12px; background: #FFF9F0; border-radius: 14px; padding: 10px 12px; font-size: 14px; line-height: 18px; font-weight: 700"><span aria-hidden="true" style="flex: none; width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(40,49,77,.18); background: {{k.bg}}"></span>{{k.name}}</li>
+</sc-for>
+</ul>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #5B6380">Los colores en pantalla son aproximados. Si quieres ver una cuerda en foto antes de decidir, pídela por mensaje.</p>
+</div>
+</section>
+
+<!-- COMO PEDIR -->
+<section id="como-pedir" style="max-width: 1240px; margin: 0 auto; padding: clamp(64px, 8vw, 104px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 12px; max-width: 640px">
+<p style="margin: 0; font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase">Cómo pedir tu Wuf!</p>
+<h2 style="margin: 0; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: clamp(34px, 4.2vw, 48px); line-height: 1.05">Es muy fácil. Tres pasos y listo.</h2>
+</div>
+<ol style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px">
+<li style="background: #EEE8FB; border-radius: 28px; padding: 28px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<span style="width: 56px; height: 56px; border-radius: 18px; background: #A58BE7; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#28314D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a10 10 0 1 1 10-10c0 2.8-2.2 3.5-4 3.5h-1.6a1.7 1.7 0 0 0-1.2 2.9 1.7 1.7 0 0 1-1.2 2.9Z"></path><circle cx="7.5" cy="10.5" r="1"></circle><circle cx="11" cy="7" r="1"></circle><circle cx="15.5" cy="8.5" r="1"></circle></svg></span>
+<span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 44px; line-height: 1; color: #28314D; opacity: .25">1</span>
+</div>
+<h3 style="margin: 0; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 24px; line-height: 28px">Elige tus colores favoritos</h3>
+<p style="margin: 0; font-size: 17px; line-height: 26px">Dos colores de la carta: uno principal y uno de contraste.</p>
+</li>
+<li style="background: #FFF4D1; border-radius: 28px; padding: 28px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<span style="width: 56px; height: 56px; border-radius: 18px; background: #FFCF46; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#28314D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"></path><path d="M12 4v16"></path><path d="M9 20h6"></path></svg></span>
+<span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 44px; line-height: 1; color: #28314D; opacity: .25">2</span>
+</div>
+<h3 style="margin: 0; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 24px; line-height: 28px">Personalízalo con su nombre</h3>
+<p style="margin: 0; font-size: 17px; line-height: 26px">Si lo deseas, ponemos su nombre con letras de colores. Sin nombre también queda precioso.</p>
+</li>
+<li style="background: #E0F6F0; border-radius: 28px; padding: 28px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<span style="width: 56px; height: 56px; border-radius: 18px; background: #75D6C0; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#28314D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"></path></svg></span>
+<span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 44px; line-height: 1; color: #28314D; opacity: .25">3</span>
+</div>
+<h3 style="margin: 0; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 24px; line-height: 28px">Nosotros lo hacemos realidad</h3>
+<p style="margin: 0; font-size: 17px; line-height: 26px">Lo tejemos a mano y te avisamos cuando su Wuf! esté listo.</p>
+</li>
+</ol>
+
+<!-- DETALLES -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
+<div style="border: 2px solid #EFE4D4; background: #FFFFFF; border-radius: 20px; padding: 20px 22px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #5B6380">Precio</span>
+<span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 26px; line-height: 30px">Desde $170 MXN</span>
+</div>
+<div style="border: 2px solid #EFE4D4; background: #FFFFFF; border-radius: 20px; padding: 20px 22px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #5B6380">Tallas</span>
+<span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 26px; line-height: 30px">CH · M · G · XG</span>
+</div>
+<div style="border: 2px solid #EFE4D4; background: #FFFFFF; border-radius: 20px; padding: 20px 22px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #5B6380">Tiempo de entrega</span>
+<span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 26px; line-height: 30px">[DÍAS]</span>
+</div>
+</div>
+</section>
+
+<!-- CTA -->
+<section style="padding: 0 clamp(16px, 4vw, 40px) clamp(64px, 8vw, 104px)">
+<div style="position: relative; overflow: hidden; max-width: 1160px; margin: 0 auto; background: #FF6B85; border-radius: 40px; padding: clamp(40px, 6vw, 80px) clamp(24px, 5vw, 72px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px">
+<div aria-hidden="true" style="position: absolute; width: 260px; height: 220px; right: -60px; top: -80px; background: #FFCF46; border-radius: 55% 45% 60% 40%"></div>
+<div aria-hidden="true" style="position: absolute; width: 200px; height: 180px; left: -70px; bottom: -90px; background: #A58BE7; border-radius: 50% 60% 40% 55%"></div>
+<div style="position: relative; flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: clamp(34px, 4.6vw, 54px); line-height: 1.02; color: #28314D">¿Listo para su Wuf!?</h2>
+<p style="margin: 0; font-size: 19px; line-height: 30px; color: #28314D; max-width: 26em">Mándanos un mensaje con sus dos colores y su nombre. Te respondemos y lo empezamos a tejer.</p>
+</div>
+<a class="wbtn" href="https://ig.me/m/wuf.accesorios" style="position: relative; background: #28314D; color: #FFF9F0; text-decoration: none; padding: 18px 32px; border-radius: 999px; font-weight: 800; font-size: 18px; box-shadow: 0 4px 0 rgba(40,49,77,.25); min-height: 56px; box-sizing: border-box; display: inline-flex; align-items: center; gap: 10px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFF9F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>Escríbenos en Instagram</a>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background: #28314D; color: #FFF9F0">
+<div style="max-width: 1240px; margin: 0 auto; padding: 48px clamp(16px, 4vw, 40px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 28px; line-height: 30px">Wuf! accesorios</span>
+<span style="font-size: 13px; line-height: 16px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: #B9BFD3">Collares con mucha personalidad</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px 28px; font-weight: 700; font-size: 16px">
+<a href="https://instagram.com/wuf.accesorios" style="color: #FFF9F0; text-decoration: underline; text-decoration-color: #FFCF46; text-decoration-thickness: 3px; text-underline-offset: 5px">@wuf.accesorios</a>
+<span style="color: #B9BFD3">Chihuahua, México</span>
+</div>
+</div>
+</footer>
+</div>
+</template>
+<script src="assets/js/runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  renderVals() {
+    var collars = [
+      { name: 'BELLA', img: 'assets/img/bella.jpg', alt: 'Collar en fiusha y morado con las letras B-E-L-L-A', colorA: 'Fiusha', hexA: '#E81C7A', colorB: 'Morado', hexB: '#7A2DA6' },
+      { name: 'NALA', img: 'assets/img/nala.jpg', alt: 'Collar en rosa pastel y lila con las letras N-A-L-A', colorA: 'Rosa pastel', hexA: '#F7B5C9', colorB: 'Lila', hexB: '#8A62D6' },
+      { name: 'BOBY', img: 'assets/img/boby.jpg', alt: 'Collar en azul turquesa y verde limón con las letras B-O-B-Y', colorA: 'Azul turquesa', hexA: '#1FA9DE', colorB: 'Verde limón', hexB: '#8FD614' },
+      { name: 'SIMBA', img: 'assets/img/simba.jpg', alt: 'Collar en azul rey y azul turquesa con las letras S-I-M-B-A', colorA: 'Azul rey', hexA: '#1747C9', colorB: 'Azul turquesa', hexB: '#1FA9DE' }
+    ];
+    var c = [
+      ['Vino','#7A1F35'],['Rojo','#D7262E'],['Azul rey','#1747C9'],['Marino','#1C2747'],['Negro','#1A1A1A'],['Amarillo','#F5B915'],
+      ['Rojo intenso','#E8141F'],['Naranja','#F26B1D'],['Azul','#1E7FD8'],['Azul turquesa','#1FA9DE'],['Gris oscuro','#55575C'],['Amarillo neón','#F2E51B'],
+      ['Coral','#F5506A'],['Naranja neón','#FF6A13'],['Azul cielo','#8CC4EC'],['Gris','#9A9B9E'],['Verde limón','#8FD614'],['Verde neón','#4BE01F'],
+      ['Morado','#7A2DA6'],['Fiusha','#E81C7A'],['Verde petróleo','#0D4D4A'],['Gris claro','#CDD3DB'],['Verde olivo','#5B6234'],['Verde militar','#3F4A2E'],
+      ['Rosa','#F27BA6'],['Rosa pastel','#F7B5C9'],['Turquesa','#1BB2B8'],['Lila','#8A62D6'],['Camuflaje amarillo','repeating-linear-gradient(45deg,#1A1A1A 0 5px,#F2D21B 5px 9px)'],['Multicolor','conic-gradient(#E8141F,#F5B915,#4BE01F,#1E7FD8,#8A62D6,#E81C7A,#E8141F)'],
+      ['Durazno','#F49A8C'],['Blanco','#F7F7F5'],['Verde','#109A4A'],['Lila jaspeado','repeating-linear-gradient(45deg,#6B4BC4 0 5px,#FFFFFF 5px 8px)'],['Camuflaje verde','repeating-linear-gradient(45deg,#3F4A2E 0 4px,#7A8A5A 4px 8px,#5A3A2A 8px 11px)'],['Neón multicolor','conic-gradient(#FF2D95,#F2E51B,#4BE01F,#1FA9DE,#FF2D95)'],
+      ['Beige','#E6D2B5'],['Caqui','#7D6646'],['Menta','#6FDCC4'],['Dorado/olivo','#A88B3A'],['Café','#6E3B1E'],['Café claro','#B58660']
+    ];
+    return { collars: collars, colors: c.map(function (x) { return { name: x[0], bg: x[1] }; }) };
+  }
+}
+mountPage(Component, {});
+</script>
+</body>
+</html>
