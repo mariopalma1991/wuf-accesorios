@@ -410,7 +410,9 @@ class Component extends DCLogic {
   afterRender() {
     var self = this, slot = document.getElementById('mapSlot');
     if (!slot) return;
-    if (!HAS_G || this._gFail) { slot.style.display = 'none'; return; }
+    var dbg = /[?&]debug/.test(location.search);
+    var why = !HAS_G ? 'No hay llave de Google en esta página (MAPS_API_KEY no se insertó al publicar: revisa la variable y haz Clear cache and deploy site en Netlify).' : this._gFail ? 'Google rechazó la llave o no cargó: revisa que Maps JavaScript API esté activada y que la llave permita este sitio.' : '';
+    if (why) { slot.style.display = dbg ? '' : 'none'; if (dbg) slot.innerHTML = '<p style="margin:0;padding:16px;font-weight:700;font-size:14px;color:#28314D">' + why + '</p>'; return; }
     if (!this._gReady) { this.loadGoogleMap(); slot.style.display = 'none'; return; }
     if (!(window.google && window.google.maps)) { slot.style.display = 'none'; return; }
     slot.style.display = '';
