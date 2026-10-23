@@ -66,3 +66,13 @@ y abre http://localhost:8000
 4. Haz un nuevo deploy. `netlify.toml` inserta la llave al publicar.
 
 Todo el mapa y el autocompletar usan Google Maps. Sin la variable no hay mapa ni sugerencias y el cliente elige su zona a mano. El secreto de GitHub no lo ve Netlify ni el navegador, por eso se usa la variable de Netlify.
+
+## Pedidos en Google Sheets (archivo "Wuf! Pedidos (privado)")
+
+La página puede mandar el pedido a un servicio de Google Apps Script que lo guarda en la pestaña **Pedidos** y avisa por correo (lista `CORREOS` en `apps-script/pedidos.gs`). Mientras `pedidosUrl` esté vacío, la página sigue enviando por WhatsApp como antes.
+
+1. Abre el archivo **Wuf! Pedidos (privado)** → Extensiones → Apps Script.
+2. Pega el contenido de `apps-script/pedidos.gs` (reemplaza todo) y guarda.
+3. Implementar → Nueva implementación → tipo **Aplicación web** → Ejecutar como: *Yo* → Quién tiene acceso: *Cualquier persona*. Autoriza los permisos (hoja y correo).
+4. Copia la URL que termina en `/exec` y ponla en `mountPage(...)` de `personaliza.html` como `"pedidosUrl": "https://script.google.com/macros/s/…/exec"`.
+5. Si cambias precios, actualízalos también en `pedidos.gs` (el servicio recalcula el total y marca "REVISAR" en Notas si no coincide con la página). Al cambiar el código, haz una **nueva versión** de la implementación.

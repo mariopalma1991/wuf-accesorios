@@ -113,6 +113,11 @@ button{font-family:inherit;cursor:pointer}
 <input id="cliente" type="text" maxlength="30" autocomplete="given-name" value="{{clientName}}" onInput="{{onClientName}}" placeholder="Ej. Laura" style="min-height: 52px; box-sizing: border-box; border: 2px solid #28314D; border-radius: 14px; padding: 10px 16px; font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 22px; color: #28314D; background: #FFF9F0">
 <label for="mascota" style="font-weight: 700; font-size: 16px; margin-top: 6px">¿Cómo se llama tu mascota?</label>
 <input id="mascota" type="text" maxlength="30" autocomplete="off" value="{{petName}}" onInput="{{onPetName}}" placeholder="Ej. Nala" style="min-height: 52px; box-sizing: border-box; border: 2px solid #28314D; border-radius: 14px; padding: 10px 16px; font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 22px; color: #28314D; background: #FFF9F0">
+<sc-if value="{{useForm}}" hint-placeholder-val="{{ false }}">
+<label for="tel" style="font-weight: 700; font-size: 16px; margin-top: 6px">Tu WhatsApp (10 dígitos)</label>
+<input id="tel" type="tel" inputmode="tel" maxlength="14" autocomplete="tel-national" value="{{tel}}" onInput="{{onTel}}" placeholder="Ej. 614 123 4567" style="min-height: 52px; box-sizing: border-box; border: 2px solid #28314D; border-radius: 14px; padding: 10px 16px; font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 22px; color: #28314D; background: #FFF9F0">
+<span style="font-size: 13px; line-height: 18px; color: #5B6380">Te escribimos a este número para confirmar tu pedido y darte los datos de pago.</span>
+</sc-if>
 <sc-if value="{{multiStyle}}" hint-placeholder-val="{{ false }}">
 <span style="font-weight: 700; font-size: 16px">Estilo de letra</span>
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 12px">
@@ -221,7 +226,7 @@ button{font-family:inherit;cursor:pointer}
 </div>
 <button class="wbtn" type="button" onClick="{{onSearch}}" style="min-height: 48px; border-radius: 999px; border: 0; background: #28314D; color: #FFF9F0; padding: 10px 20px; font-weight: 800; font-size: 16px">{{searchLabel}}</button>
 </div>
-<p style="margin: 0; display: flex; align-items: flex-start; gap: 10px; background: #E0F6F0; border-radius: 14px; padding: 10px 14px; font-size: 14px; line-height: 20px; font-weight: 700"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#28314D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 0"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span>Tu dirección no se guarda. Solo la usamos para calcular el costo de envío.</span></p>
+<p style="margin: 0; display: flex; align-items: flex-start; gap: 10px; background: #E0F6F0; border-radius: 14px; padding: 10px 14px; font-size: 14px; line-height: 20px; font-weight: 700"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#28314D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 0"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span>{{addrNote}}</span></p>
 <span style="font-size: 14px; line-height: 20px; font-weight: 700; min-height: 20px">{{geoMsg}}</span>
 <div id="mapSlot" style="width: 100%; height: clamp(260px, 52vw, 360px); border-radius: 18px; overflow: hidden; background: #EEE8FB; border: 2px solid #EFE4D4"></div>
 <span style="font-size: 13px; line-height: 18px; color: #5B6380">También puedes tocar el mapa para marcar tu ubicación. Mapa de Google Maps.</span>
@@ -251,7 +256,7 @@ button{font-family:inherit;cursor:pointer}
 <!-- ENVIAR -->
 <div style="background: #FF6B85; border-radius: 28px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
 <h2 style="margin: 0; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 26px; line-height: 30px">¡Listo! Mándanos tu pedido</h2>
-<p style="margin: 0; font-size: 16px; line-height: 24px">Mándanos tu pedido por WhatsApp y te confirmamos precio y entrega.</p>
+<p style="margin: 0; font-size: 16px; line-height: 24px">{{boxIntro}}</p>
 <div style="background: #FFFFFF; border-radius: 20px; padding: 18px 18px 16px; color: #28314D; display: flex; flex-direction: column">
 <div style="display: flex; flex-direction: column; gap: 2px; padding-bottom: 14px">
 <span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 24px; line-height: 28px">{{orderTitle}}</span>
@@ -282,9 +287,26 @@ button{font-family:inherit;cursor:pointer}
 <span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 30px; line-height: 32px">{{totalLabel}}</span>
 </div>
 </div>
+<sc-if value="{{useWa}}" hint-placeholder-val="{{ true }}">
 <div style="display: flex; flex-wrap: wrap; gap: 10px">
 <a class="wbtn" href="{{waHref}}" target="_blank" rel="noopener" style="min-height: 52px; box-sizing: border-box; border-radius: 999px; background: #28314D; color: #FFF9F0; text-decoration: none; padding: 14px 22px; font-weight: 800; font-size: 17px; display: inline-flex; align-items: center; gap: 8px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFF9F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.7-5.1A8.5 8.5 0 1 1 8.2 19.4Z"></path><path d="M9 9.5c.3 2.3 2.7 4.6 5 5l1.2-1.2-1.9-1-.8.6c-.9-.4-1.6-1.1-2-2l.6-.8-1-1.9Z"></path></svg>Enviar por WhatsApp</a>
 </div>
+</sc-if>
+<sc-if value="{{showSend}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<button class="wbtn" type="button" onClick="{{onSend}}" style="min-height: 56px; box-sizing: border-box; border-radius: 999px; border: 0; background: #28314D; color: #FFF9F0; padding: 14px 22px; font-weight: 800; font-size: 18px; cursor: pointer">{{sendLabel}}</button>
+<span style="font-size: 14px; line-height: 20px; font-weight: 700; min-height: 20px">{{sendMsg}}</span>
+<span style="font-size: 13px; line-height: 18px">Al enviar, usamos tus datos solo para preparar, cobrar y entregar tu pedido.</span>
+</div>
+</sc-if>
+<sc-if value="{{isSent}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FFFFFF; border-radius: 20px; padding: 18px; color: #28314D; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 26px; line-height: 30px">¡Pedido #{{sentNo}} recibido!</span>
+<span style="font-size: 16px; line-height: 24px">Total: <b>{{sentTotal}}</b>. Te escribimos por WhatsApp al <b>{{sentTel}}</b> para confirmar y darte los datos de pago.</span>
+<a class="wbtn" href="{{waDoubt}}" target="_blank" rel="noopener" style="min-height: 48px; box-sizing: border-box; border-radius: 999px; background: #28314D; color: #FFF9F0; text-decoration: none; padding: 12px 20px; font-weight: 800; font-size: 16px; display: inline-flex; align-items: center; justify-content: center">¿Dudas? Escríbenos por WhatsApp</a>
+<button class="wbtn" type="button" onClick="{{onNew}}" style="min-height: 44px; border-radius: 999px; border: 2px solid #28314D; background: transparent; color: #28314D; padding: 10px 18px; font-weight: 800; font-size: 15px; cursor: pointer">Hacer otro pedido</button>
+</div>
+</sc-if>
 </div>
 </div>
 </section>
@@ -309,7 +331,7 @@ var HAS_G = /^AIza/.test(GKEY);
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { inv: null, style: null, size: 'M', custom: '', a: 'Lila', b: 'Rosa pastel', target: 'a', keychain: false, petName: '', clientName: '', placa: false, zone: null, copied: '', addr: '', point: null, geoMsg: '', searching: false, sugs: [] };
+    this.state = { inv: null, style: null, size: 'M', custom: '', a: 'Lila', b: 'Rosa pastel', target: 'a', keychain: false, petName: '', clientName: '', placa: false, zone: null, copied: '', addr: '', point: null, geoMsg: '', searching: false, sugs: [], tel: '', sending: false, sendMsg: '', sentNo: null, sentTotal: '', sentTel: '' };
   }
   componentDidMount() {
     var self = this;
@@ -335,6 +357,29 @@ class Component extends DCLogic {
     clearTimeout(this._sugT);
     if (v.trim().length < 4) return;
     this._sugT = setTimeout(function () { self.fetchSugs(v.trim()); }, 450);
+  }
+  onTel(e) { this.setState({ tel: e.target.value, sendMsg: '' }); }
+  onNew() { window.location.reload(); }
+  onSend() {
+    var self = this, st = this.state, url = this.props.pedidosUrl;
+    if (!url || st.sending) return;
+    var d = this._order;
+    var faltan = [];
+    if (!d.cliente) faltan.push('tu nombre');
+    if (!d.mascota) faltan.push('el nombre de tu mascota');
+    if (!(d.cm >= 15 && d.cm <= 80)) faltan.push('la medida del cuello');
+    if (d.tel.length !== 10) faltan.push('tu WhatsApp de 10 dígitos');
+    if (!d.zona) faltan.push('la zona de envío');
+    if (!d.direccion) faltan.push('tu dirección');
+    if (faltan.length) { this.setState({ sendMsg: 'Falta: ' + faltan.join(', ') + '.' }); return; }
+    this.setState({ sending: true, sendMsg: '' });
+    fetch(url, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(d) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j && j.ok) self.setState({ sending: false, sentNo: j.pedido, sentTotal: '$' + j.total + ' MXN', sentTel: d.tel.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3') });
+        else self.setState({ sending: false, sendMsg: (j && j.error) || 'No pudimos enviar tu pedido. Inténtalo de nuevo.' });
+      })
+      .catch(function () { self.setState({ sending: false, sendMsg: 'No pudimos enviar tu pedido. Revisa tu conexión e inténtalo de nuevo.' }); });
   }
   onClear() {
     clearTimeout(this._sugT); this._sugSeq = (this._sugSeq || 0) + 1;
@@ -618,6 +663,13 @@ class Component extends DCLogic {
       '🚚 *ENVÍO*\n' + (zSel ? shipLine + (ship ? ' · $' + ship : ' · por confirmar') : 'Por definir') + '\n\n' +
       '━━━━━━━━━━━━━━\n' +
       '💰 *TOTAL: $' + total + ' MXN*' + (zSel && !ship ? ' + envío' : '');
+
+    var useForm = !!this.props.pedidosUrl;
+    var telDigits = String(st.tel || '').replace(/\D/g, '').slice(-10);
+    this._order = { cliente: client, mascota: pet, tel: telDigits, cm: cmOk ? cm : 0, colorA: aN, colorB: bN, estilo: style.name,
+      placa: !!st.placa, zona: zSel ? parseInt(String(zSel[0]).replace(/\D/g, ''), 10) : 0,
+      direccion: String(st.addr || '').trim() || (st.point ? 'Punto en el mapa' : ''), lat: st.point ? st.point[0] : null, lon: st.point ? st.point[1] : null,
+      totalPagina: total, web: '' };
     var placaText = (pet || 'SU NOMBRE').toUpperCase();
     var CW = { A:.722,B:.722,C:.722,D:.722,E:.667,F:.611,G:.778,H:.722,I:.278,J:.556,K:.722,L:.611,M:.833,N:.722,'Ñ':.722,O:.778,P:.667,Q:.778,R:.722,S:.667,T:.611,U:.722,V:.667,W:.944,X:.667,Y:.667,Z:.611,' ':.278 };
     var em = 0;
@@ -640,6 +692,11 @@ class Component extends DCLogic {
       copyLabel: st.copied === 'ok' ? '¡Copiado!' : st.copied === 'fail' ? 'Selecciona el texto y cópialo' : 'Copiar pedido',
       hasName: false, noName: true, beads: beads, beadGap: (0.4 * scale).toFixed(2) + 'cqw',
       previewNote: 'Imagen aproximada: los colores y el tejido pueden variar un poco en el collar real. El nombre de la foto es solo de ejemplo.',
+      useForm: useForm, useWa: !useForm, showSend: useForm && !st.sentNo, isSent: !!st.sentNo, tel: st.tel, onTel: function (e) { self.onTel(e); }, onSend: function () { self.onSend(); }, onNew: function () { self.onNew(); },
+      sendLabel: st.sending ? 'Enviando…' : 'Enviar pedido', sendMsg: st.sendMsg, sentNo: st.sentNo, sentTotal: st.sentTotal, sentTel: st.sentTel,
+      waDoubt: 'https://wa.me/526144879916?text=' + encodeURIComponent('Hola Wuf! Tengo una duda de mi pedido #' + st.sentNo),
+      boxIntro: st.sentNo ? 'Gracias por tu pedido.' : (useForm ? 'Revisa tu pedido y envíalo. Te escribimos por WhatsApp para confirmarlo.' : 'Mándanos tu pedido por WhatsApp y te confirmamos precio y entrega.'),
+      addrNote: useForm ? 'Usamos tu dirección para calcular el envío y entregarte tu pedido.' : 'Tu dirección no se guarda. Solo la usamos para calcular el costo de envío.',
       orderTitle: orderTitle, orderFrom: orderFrom, pCollar: pCollar, lettersLine: lettersLine, pLetters: pLetters, placaLine: placaLine, pPlaca: pPlaca, placaNote2: placaNote2, shipLine: shipLine, pShip: pShip,
       clientName: st.clientName, petName: st.petName, petLabel: pet || 'Sin nombre aún',
       letHint: nLet ? style.name + ': ' + nLet + (nLet === 1 ? ' letra' : ' letras') + ' × $' + LETRA + ' = $' + letCost + ' MXN.' : 'Su nombre va en letras sobre el collar (' + style.name + '): $' + LETRA + ' MXN por letra.',
