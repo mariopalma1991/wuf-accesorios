@@ -7,3 +7,5 @@
   # La llave de Google Maps es pública por diseño (va en la página, protegida por restricción de sitio).
   # Sin esto, Netlify bloquea el deploy al encontrar la llave dentro de los archivos.
   SECRETS_SCAN_OMIT_KEYS = "MAPS_API_KEY"
+  # Netlify también detecta "AIza…" como posible secreto aunque sea una llave pública de navegador.
+  SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
