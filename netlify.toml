@@ -2,3 +2,8 @@
   publish = "."
   # Inserta la llave de Google Maps (variable MAPS_API_KEY de Netlify) en la página de personalización.
   command = "sed -i \"s|__MAPS_API_KEY__|${MAPS_API_KEY}|g\" personaliza.html"
+
+[build.environment]
+  # La llave de Google Maps es pública por diseño (va en la página, protegida por restricción de sitio).
+  # Sin esto, Netlify bloquea el deploy al encontrar la llave dentro de los archivos.
+  SECRETS_SCAN_OMIT_KEYS = "MAPS_API_KEY"
