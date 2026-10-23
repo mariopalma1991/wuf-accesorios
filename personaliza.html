@@ -11,7 +11,6 @@
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#FF6B85">
 <link rel="icon" href="assets/img/logo.png">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;family=Arimo:wght@700&amp;display=swap" rel="stylesheet">
 <style>
@@ -225,7 +224,7 @@ button{font-family:inherit;cursor:pointer}
 <p style="margin: 0; display: flex; align-items: flex-start; gap: 10px; background: #E0F6F0; border-radius: 14px; padding: 10px 14px; font-size: 14px; line-height: 20px; font-weight: 700"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#28314D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 0"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span>Tu dirección no se guarda. Solo la usamos para calcular el costo de envío.</span></p>
 <span style="font-size: 14px; line-height: 20px; font-weight: 700; min-height: 20px">{{geoMsg}}</span>
 <div id="mapSlot" style="width: 100%; height: clamp(260px, 52vw, 360px); border-radius: 18px; overflow: hidden; background: #EEE8FB; border: 2px solid #EFE4D4"></div>
-<span style="font-size: 13px; line-height: 18px; color: #5B6380">También puedes tocar el mapa para marcar tu ubicación. Mapa © OpenStreetMap.</span>
+<span style="font-size: 13px; line-height: 18px; color: #5B6380">También puedes tocar el mapa para marcar tu ubicación. Mapa de Google Maps.</span>
 </div>
 <div style="flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
 <sc-for list="{{zones}}" as="z" hint-placeholder-count="4">
@@ -301,7 +300,6 @@ button{font-family:inherit;cursor:pointer}
 </footer>
 </div>
 </template>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="assets/js/runtime.js"></script>
 <script src="assets/js/inventario.js"></script>
 <script>
@@ -380,56 +378,29 @@ class Component extends DCLogic {
   }
   fetchSugs(q) {
     var self = this, seq = this._sugSeq = (this._sugSeq || 0) + 1;
-    if (HAS_G) {
-      this.gSugs(q).then(function (list) { if (seq !== self._sugSeq) return; self.setState({ sugs: list.slice(0, 5) }); }).catch(function () { HAS_G = false; self.fetchSugs(q); });
-      return;
-    }
-    var url = 'https://photon.komoot.io/api/?limit=5&lang=es&lat=28.65&lon=-106.08&bbox=-106.40,28.45,-105.85,28.85&q=' + encodeURIComponent(q);
-    fetch(url).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (j) {
-      return (j.features || []).map(function (f) {
-        var p = f.properties || {}, c = f.geometry.coordinates;
-        var street = p.street ? p.street + (p.housenumber ? ' ' + p.housenumber : '') : '';
-        var main = p.name && p.name !== p.street ? p.name : (street || p.name || '');
-        var sub = [p.name && street && p.name !== street ? street : '', p.district || p.suburb || p.locality || '', p.city || p.county || ''].filter(Boolean).join(', ');
-        return { main: main, sub: sub, label: [main, sub].filter(Boolean).join(', '), lat: c[1], lon: c[0] };
-      }).filter(function (g) { return g.main; });
-    }).catch(function () {
-      var u2 = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&countrycodes=mx&accept-language=es&viewbox=-106.40,28.85,-105.85,28.45&bounded=1&q=' + encodeURIComponent(q + ', Chihuahua, Chihuahua');
-      return fetch(u2).then(function (r) { return r.json(); }).then(function (res) {
-        return res.map(function (x) { var parts = String(x.display_name).split(', '); return { main: parts[0], sub: parts.slice(1, 4).join(', '), label: parts.slice(0, 4).join(', '), lat: parseFloat(x.lat), lon: parseFloat(x.lon) }; });
-      });
-    }).then(function (list) {
-      if (seq !== self._sugSeq) return;
-      self.setState({ sugs: list.slice(0, 5) });
-    }).catch(function () {});
+    if (!HAS_G) { this.setState({ sugs: [] }); return; }
+    this.gSugs(q).then(function (list) { if (seq !== self._sugSeq) return; self.setState({ sugs: list.slice(0, 5) }); }).catch(function () {});
   }
   onSearch() {
     var self = this, q = String(this.state.addr || '').trim();
     if (q.length < 4) { this.setState({ geoMsg: 'Escribe tu calle, número y colonia.' }); return; }
     clearTimeout(this._sugT); this._sugSeq = (this._sugSeq || 0) + 1;
+    var NF = 'No encontramos esa dirección. Toca tu ubicación en el mapa o elige tu zona abajo.';
+    if (!HAS_G) { this.setState({ searching: false, geoMsg: 'El buscador no está disponible ahora. Elige tu zona abajo.' }); return; }
     this.setState({ searching: true, geoMsg: 'Buscando…', sugs: [] });
-    if (HAS_G) {
-      this.gSugs(q).then(function (list) {
-        if (!list.length) { self.setState({ searching: false, geoMsg: 'No encontramos esa dirección. Toca tu ubicación en el mapa o elige tu zona abajo.' }); return; }
-        self.pickSug(list[0]);
-      }).catch(function () { HAS_G = false; self.onSearch(); });
-      return;
-    }
-    var url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=mx&accept-language=es' +
-      '&viewbox=-106.40,28.85,-105.85,28.45&bounded=1&q=' + encodeURIComponent(q + ', Chihuahua, Chihuahua');
-    fetch(url).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (res) {
-      if (!res || !res.length) { self.setState({ searching: false, geoMsg: 'No encontramos esa dirección. Toca tu ubicación en el mapa o elige tu zona abajo.' }); return; }
-      self.setPoint(parseFloat(res[0].lat), parseFloat(res[0].lon), 'Tu dirección');
+    this.gSugs(q).then(function (list) {
+      if (!list.length) { self.setState({ searching: false, geoMsg: NF }); return; }
+      self.pickSug(list[0]);
     }).catch(function () { self.setState({ searching: false, geoMsg: 'No pudimos buscar la dirección. Toca tu ubicación en el mapa o elige tu zona abajo.' }); });
   }
   mapClear() {
     if (this._pin) { if (this._pin.setMap) this._pin.setMap(null); else this._pin.remove(); this._pin = null; this._pinKey = null; }
-    if (this._map) { if (this._gm) { this._map.setCenter({ lat: this.geoOrigin()[0], lng: this.geoOrigin()[1] }); this._map.setZoom(12); } else if (window.L) this._map.setView(this.geoOrigin(), 12); }
+    if (this._map) { this._map.setCenter({ lat: this.geoOrigin()[0], lng: this.geoOrigin()[1] }); this._map.setZoom(12); }
   }
   loadGoogleMap() {
     var self = this;
     if (this._gLoading) return; this._gLoading = true;
-    window.gm_authFailure = function () { self._gFail = true; self._gm = false; self._map = null; self._mapEl = null; self._pin = null; self.setState({ geoMsg: '' }); };
+    window.gm_authFailure = function () { self._gFail = true; self._map = null; self._mapEl = null; self._pin = null; self.setState({ geoMsg: 'El mapa no está disponible. Elige tu zona abajo.' }); };
     var sc = document.createElement('script');
     sc.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(GKEY) + '&language=es&region=MX&loading=async&callback=__wufGmap';
     window.__wufGmap = function () { self._gReady = true; self.setState({}); };
@@ -439,64 +410,36 @@ class Component extends DCLogic {
   afterRender() {
     var self = this, slot = document.getElementById('mapSlot');
     if (!slot) return;
-    var useG = HAS_G && !this._gFail;
-    if (useG && !this._gReady) { this.loadGoogleMap(); slot.style.display = 'none'; return; }
-    if (useG && !(window.google && window.google.maps)) { slot.style.display = 'none'; return; }
-    if (!useG && !window.L) { slot.style.display = 'none'; return; }
+    if (!HAS_G || this._gFail) { slot.style.display = 'none'; return; }
+    if (!this._gReady) { this.loadGoogleMap(); slot.style.display = 'none'; return; }
+    if (!(window.google && window.google.maps)) { slot.style.display = 'none'; return; }
     slot.style.display = '';
-    if (this._map && this._gm !== useG) { this._map = null; this._mapEl = null; this._pin = null; this._pinKey = null; }
-    var o = this.geoOrigin(), cols = ['#75D6C0', '#FFCF46', '#A58BE7'];
+    var G = window.google.maps, o = this.geoOrigin(), cols = ['#75D6C0', '#FFCF46', '#A58BE7'];
     if (!this._map) {
       var el = this._mapEl = document.createElement('div');
       el.style.cssText = 'width:100%;height:100%';
-      if (useG) {
-        var G = window.google.maps;
-        var map = this._map = new G.Map(el, { center: { lat: o[0], lng: o[1] }, zoom: 12, mapTypeControl: false, streetViewControl: false, fullscreenControl: false, gestureHandling: 'cooperative', clickableIcons: false });
-        [10, 6, 3].forEach(function (km, i) {
-          new G.Circle({ map: map, center: { lat: o[0], lng: o[1] }, radius: km * 1000, strokeColor: cols[2 - i], strokeWeight: 2, fillColor: cols[2 - i], fillOpacity: 0.18, clickable: false });
-        });
-        new G.Marker({ map: map, position: { lat: o[0], lng: o[1] }, clickable: false, title: 'UACH Norte',
-          icon: { path: G.SymbolPath.CIRCLE, scale: 8, fillColor: '#28314D', fillOpacity: 1, strokeColor: '#FFFFFF', strokeWeight: 3, labelOrigin: new G.Point(0, -2.4) },
-          label: { text: 'UACH Norte', color: '#28314D', fontWeight: '800', fontSize: '12px' } });
-        map.addListener('click', function (ev) { self.setPoint(ev.latLng.lat(), ev.latLng.lng(), 'El punto que marcaste'); });
-        this._gm = true;
-      } else {
-        var L = window.L;
-        var map2 = this._map = L.map(el, { scrollWheelZoom: false }).setView(o, 12);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map2);
-        [10, 6, 3].forEach(function (km, i) {
-          L.circle(o, { radius: km * 1000, color: cols[2 - i], weight: 2, fillColor: cols[2 - i], fillOpacity: 0.18 }).addTo(map2);
-        });
-        L.circleMarker(o, { radius: 8, color: '#FFFFFF', weight: 3, fillColor: '#28314D', fillOpacity: 1 }).bindTooltip('UACH Norte', { permanent: true, direction: 'top', offset: [0, -8] }).addTo(map2);
-        map2.on('click', function (ev) { self.setPoint(ev.latlng.lat, ev.latlng.lng, 'El punto que marcaste'); });
-        this._gm = false;
-      }
+      var map = this._map = new G.Map(el, { center: { lat: o[0], lng: o[1] }, zoom: 12, mapTypeControl: false, streetViewControl: false, fullscreenControl: false, gestureHandling: 'cooperative', clickableIcons: false });
+      [10, 6, 3].forEach(function (km, i) {
+        new G.Circle({ map: map, center: { lat: o[0], lng: o[1] }, radius: km * 1000, strokeColor: cols[2 - i], strokeWeight: 2, fillColor: cols[2 - i], fillOpacity: 0.18, clickable: false });
+      });
+      new G.Marker({ map: map, position: { lat: o[0], lng: o[1] }, clickable: false, title: 'UACH Norte',
+        icon: { path: G.SymbolPath.CIRCLE, scale: 8, fillColor: '#28314D', fillOpacity: 1, strokeColor: '#FFFFFF', strokeWeight: 3, labelOrigin: new G.Point(0, -2.4) },
+        label: { text: 'UACH Norte', color: '#28314D', fontWeight: '800', fontSize: '12px' } });
+      map.addListener('click', function (ev) { self.setPoint(ev.latLng.lat(), ev.latLng.lng(), 'El punto que marcaste'); });
     }
     var fresh = this._mapEl.parentNode !== slot;
-    if (fresh) slot.appendChild(this._mapEl);
+    if (fresh) { slot.appendChild(this._mapEl); G.event.trigger(this._map, 'resize'); }
     var p = this.state.point;
-    if (this._gm) {
-      var G2 = window.google.maps;
-      if (fresh) G2.event.trigger(this._map, 'resize');
-      if (p) {
-        var pos = { lat: p[0], lng: p[1] };
-        if (!this._pin) this._pin = new G2.Marker({ map: this._map, position: pos, clickable: false, icon: { path: G2.SymbolPath.CIRCLE, scale: 9, fillColor: '#FF6B85', fillOpacity: 1, strokeColor: '#FFFFFF', strokeWeight: 3 } });
-        else { this._pin.setMap(this._map); this._pin.setPosition(pos); }
-        if (this._pinKey !== p[0] + ',' + p[1]) {
-          this._pinKey = p[0] + ',' + p[1];
-          var bd = new G2.LatLngBounds(); bd.extend(pos); bd.extend({ lat: o[0], lng: o[1] });
-          this._map.fitBounds(bd, 40);
-          G2.event.addListenerOnce(this._map, 'idle', function () { if (self._map.getZoom() > 15) self._map.setZoom(15); });
-        }
+    if (p) {
+      var pos = { lat: p[0], lng: p[1] };
+      if (!this._pin) this._pin = new G.Marker({ map: this._map, position: pos, clickable: false, icon: { path: G.SymbolPath.CIRCLE, scale: 9, fillColor: '#FF6B85', fillOpacity: 1, strokeColor: '#FFFFFF', strokeWeight: 3 } });
+      else { this._pin.setMap(this._map); this._pin.setPosition(pos); }
+      if (this._pinKey !== p[0] + ',' + p[1]) {
+        this._pinKey = p[0] + ',' + p[1];
+        var bd = new G.LatLngBounds(); bd.extend(pos); bd.extend({ lat: o[0], lng: o[1] });
+        this._map.fitBounds(bd, 40);
+        G.event.addListenerOnce(this._map, 'idle', function () { if (self._map.getZoom() > 15) self._map.setZoom(15); });
       }
-    } else {
-      var L2 = window.L;
-      if (p) {
-        if (!this._pin) this._pin = L2.circleMarker([p[0], p[1]], { radius: 9, color: '#FFFFFF', weight: 3, fillColor: '#FF6B85', fillOpacity: 1 }).addTo(this._map);
-        else this._pin.setLatLng([p[0], p[1]]);
-        if (this._pinKey !== p[0] + ',' + p[1]) { this._pinKey = p[0] + ',' + p[1]; this._map.fitBounds(L2.latLngBounds([p[0], p[1]], o).pad(0.4), { maxZoom: 15 }); }
-      }
-      this._map.invalidateSize();
     }
   }
   renderVals() {

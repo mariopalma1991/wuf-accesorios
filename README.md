@@ -65,4 +65,4 @@ y abre http://localhost:8000
 3. En Netlify: Site configuration → Environment variables → agrega `MAPS_API_KEY` con la llave.
 4. Haz un nuevo deploy. `netlify.toml` inserta la llave al publicar.
 
-Sin la variable, la página usa el buscador libre (OpenStreetMap) como respaldo. El secreto de GitHub no lo ve Netlify ni el navegador, por eso se usa la variable de Netlify.
+Todo el mapa y el autocompletar usan Google Maps. Sin la variable no hay mapa ni sugerencias y el cliente elige su zona a mano. El secreto de GitHub no lo ve Netlify ni el navegador, por eso se usa la variable de Netlify.
