@@ -57,3 +57,12 @@ python3 -m http.server 8000
 ```
 
 y abre http://localhost:8000
+
+## Autocompletar de direcciones con Google Maps
+
+1. En Google Cloud activa **Places API (New)** y crea una API key.
+2. Restringe la llave por **sitios web (HTTP referrers)**: tu dominio de Netlify y tu dominio propio. Restríngela también a Places API.
+3. En Netlify: Site configuration → Environment variables → agrega `MAPS_API_KEY` con la llave.
+4. Haz un nuevo deploy. `netlify.toml` inserta la llave al publicar.
+
+Sin la variable, la página usa el buscador libre (OpenStreetMap) como respaldo. El secreto de GitHub no lo ve Netlify ni el navegador, por eso se usa la variable de Netlify.

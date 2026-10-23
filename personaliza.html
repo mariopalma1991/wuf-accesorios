@@ -305,6 +305,9 @@ button{font-family:inherit;cursor:pointer}
 <script src="assets/js/runtime.js"></script>
 <script src="assets/js/inventario.js"></script>
 <script>
+// Llave de Google Maps: Netlify la pone aquí al publicar (variable MAPS_API_KEY). Si no existe, se usa el buscador libre.
+var GKEY = '__MAPS_API_KEY__';
+var HAS_G = /^AIza/.test(GKEY);
 class Component extends DCLogic {
   constructor(props) {
     super(props);
@@ -346,9 +349,42 @@ class Component extends DCLogic {
     if (e.key === 'Enter') { e.preventDefault(); var g = this.state.sugs[0]; if (g) this.pickSug(g); else this.onSearch(); }
     else if (e.key === 'Escape') this.setState({ sugs: [] });
   }
-  pickSug(g) { clearTimeout(this._sugT); this._sugSeq = (this._sugSeq || 0) + 1; this.setState({ addr: g.label, sugs: [] }); this.setPoint(g.lat, g.lon, 'Tu dirección'); }
+  pickSug(g) {
+    var self = this; clearTimeout(this._sugT); this._sugSeq = (this._sugSeq || 0) + 1;
+    this.setState({ addr: g.label, sugs: [] });
+    if (g.placeId) {
+      this.setState({ searching: true, geoMsg: 'Buscando…' });
+      fetch('https://places.googleapis.com/v1/places/' + g.placeId + '?languageCode=es&sessionToken=' + this._gTok(), { headers: { 'X-Goog-Api-Key': GKEY, 'X-Goog-FieldMask': 'location' } })
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(function (d) { self._gTokV = null; self.setPoint(d.location.latitude, d.location.longitude, 'Tu dirección'); })
+        .catch(function () { self.setState({ searching: false, geoMsg: 'No pudimos ubicar esa dirección. Toca tu ubicación en el mapa o elige tu zona abajo.' }); });
+      return;
+    }
+    this.setPoint(g.lat, g.lon, 'Tu dirección');
+  }
+  _gTok() { return this._gTokV || (this._gTokV = 'w' + Math.random().toString(36).slice(2) + Date.now().toString(36)); }
+  gSugs(q) {
+    var o = this.geoOrigin();
+    return fetch('https://places.googleapis.com/v1/places:autocomplete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': GKEY },
+      body: JSON.stringify({ input: q, languageCode: 'es', regionCode: 'MX', sessionToken: this._gTok(),
+        locationBias: { circle: { center: { latitude: o[0], longitude: o[1] }, radius: 25000 } } })
+    }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (j) {
+      return (j.suggestions || []).filter(function (x) { return x.placePrediction; }).map(function (x) {
+        var pp = x.placePrediction, sf = pp.structuredFormat || {};
+        var main = (sf.mainText && sf.mainText.text) || (pp.text && pp.text.text) || '';
+        var sub = (sf.secondaryText && sf.secondaryText.text) || '';
+        return { main: main, sub: sub, label: (pp.text && pp.text.text) || [main, sub].filter(Boolean).join(', '), placeId: pp.placeId };
+      });
+    });
+  }
   fetchSugs(q) {
     var self = this, seq = this._sugSeq = (this._sugSeq || 0) + 1;
+    if (HAS_G) {
+      this.gSugs(q).then(function (list) { if (seq !== self._sugSeq) return; self.setState({ sugs: list.slice(0, 5) }); }).catch(function () { HAS_G = false; self.fetchSugs(q); });
+      return;
+    }
     var url = 'https://photon.komoot.io/api/?limit=5&lang=es&lat=28.65&lon=-106.08&bbox=-106.40,28.45,-105.85,28.85&q=' + encodeURIComponent(q);
     fetch(url).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (j) {
       return (j.features || []).map(function (f) {
@@ -373,6 +409,13 @@ class Component extends DCLogic {
     if (q.length < 4) { this.setState({ geoMsg: 'Escribe tu calle, número y colonia.' }); return; }
     clearTimeout(this._sugT); this._sugSeq = (this._sugSeq || 0) + 1;
     this.setState({ searching: true, geoMsg: 'Buscando…', sugs: [] });
+    if (HAS_G) {
+      this.gSugs(q).then(function (list) {
+        if (!list.length) { self.setState({ searching: false, geoMsg: 'No encontramos esa dirección. Toca tu ubicación en el mapa o elige tu zona abajo.' }); return; }
+        self.pickSug(list[0]);
+      }).catch(function () { HAS_G = false; self.onSearch(); });
+      return;
+    }
     var url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=mx&accept-language=es' +
       '&viewbox=-106.40,28.85,-105.85,28.45&bounded=1&q=' + encodeURIComponent(q + ', Chihuahua, Chihuahua');
     fetch(url).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (res) {
