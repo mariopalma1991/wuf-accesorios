@@ -60,8 +60,8 @@ y abre http://localhost:8000
 
 ## Autocompletar de direcciones con Google Maps
 
-1. En Google Cloud activa **Places API (New)** y crea una API key.
-2. Restringe la llave por **sitios web (HTTP referrers)**: tu dominio de Netlify y tu dominio propio. Restríngela también a Places API.
+1. En Google Cloud activa **Places API (New)** y **Maps JavaScript API** (esta dibuja el mapa) y crea una API key.
+2. Restringe la llave por **sitios web (HTTP referrers)**: tu dominio de Netlify y tu dominio propio. Restríngela también a esas dos APIs.
 3. En Netlify: Site configuration → Environment variables → agrega `MAPS_API_KEY` con la llave.
 4. Haz un nuevo deploy. `netlify.toml` inserta la llave al publicar.
 
