@@ -340,8 +340,7 @@ class Component extends DCLogic {
   }
   onClear() {
     clearTimeout(this._sugT); this._sugSeq = (this._sugSeq || 0) + 1;
-    if (this._pin) { this._pin.remove(); this._pin = null; this._pinKey = null; }
-    if (this._map && window.L) this._map.setView(this.geoOrigin(), 12);
+    this.mapClear();
     this.setState({ addr: '', sugs: [], point: null, zone: null, geoMsg: '', searching: false, copied: '' });
     var d = document.getElementById('dir'); if (d) d.focus();
   }
@@ -423,31 +422,82 @@ class Component extends DCLogic {
       self.setPoint(parseFloat(res[0].lat), parseFloat(res[0].lon), 'Tu dirección');
     }).catch(function () { self.setState({ searching: false, geoMsg: 'No pudimos buscar la dirección. Toca tu ubicación en el mapa o elige tu zona abajo.' }); });
   }
+  mapClear() {
+    if (this._pin) { if (this._pin.setMap) this._pin.setMap(null); else this._pin.remove(); this._pin = null; this._pinKey = null; }
+    if (this._map) { if (this._gm) { this._map.setCenter({ lat: this.geoOrigin()[0], lng: this.geoOrigin()[1] }); this._map.setZoom(12); } else if (window.L) this._map.setView(this.geoOrigin(), 12); }
+  }
+  loadGoogleMap() {
+    var self = this;
+    if (this._gLoading) return; this._gLoading = true;
+    window.gm_authFailure = function () { self._gFail = true; self._gm = false; self._map = null; self._mapEl = null; self._pin = null; self.setState({ geoMsg: '' }); };
+    var sc = document.createElement('script');
+    sc.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(GKEY) + '&language=es&region=MX&loading=async&callback=__wufGmap';
+    window.__wufGmap = function () { self._gReady = true; self.setState({}); };
+    sc.onerror = function () { self._gFail = true; self.setState({}); };
+    sc.async = true; document.head.appendChild(sc);
+  }
   afterRender() {
     var self = this, slot = document.getElementById('mapSlot');
     if (!slot) return;
-    if (!window.L) { slot.style.display = 'none'; return; }
+    var useG = HAS_G && !this._gFail;
+    if (useG && !this._gReady) { this.loadGoogleMap(); slot.style.display = 'none'; return; }
+    if (useG && !(window.google && window.google.maps)) { slot.style.display = 'none'; return; }
+    if (!useG && !window.L) { slot.style.display = 'none'; return; }
+    slot.style.display = '';
+    if (this._map && this._gm !== useG) { this._map = null; this._mapEl = null; this._pin = null; this._pinKey = null; }
+    var o = this.geoOrigin(), cols = ['#75D6C0', '#FFCF46', '#A58BE7'];
     if (!this._map) {
       var el = this._mapEl = document.createElement('div');
       el.style.cssText = 'width:100%;height:100%';
-      var o = this.geoOrigin(), L = window.L;
-      var map = this._map = L.map(el, { scrollWheelZoom: false }).setView(o, 12);
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map);
-      var cols = ['#75D6C0', '#FFCF46', '#A58BE7'];
-      [10, 6, 3].forEach(function (km, i) {
-        L.circle(o, { radius: km * 1000, color: cols[2 - i], weight: 2, fillColor: cols[2 - i], fillOpacity: 0.18 }).addTo(map);
-      });
-      L.circleMarker(o, { radius: 8, color: '#FFFFFF', weight: 3, fillColor: '#28314D', fillOpacity: 1 }).bindTooltip('UACH Norte', { permanent: true, direction: 'top', offset: [0, -8] }).addTo(map);
-      map.on('click', function (ev) { self.setPoint(ev.latlng.lat, ev.latlng.lng, 'El punto que marcaste'); });
+      if (useG) {
+        var G = window.google.maps;
+        var map = this._map = new G.Map(el, { center: { lat: o[0], lng: o[1] }, zoom: 12, mapTypeControl: false, streetViewControl: false, fullscreenControl: false, gestureHandling: 'cooperative', clickableIcons: false });
+        [10, 6, 3].forEach(function (km, i) {
+          new G.Circle({ map: map, center: { lat: o[0], lng: o[1] }, radius: km * 1000, strokeColor: cols[2 - i], strokeWeight: 2, fillColor: cols[2 - i], fillOpacity: 0.18, clickable: false });
+        });
+        new G.Marker({ map: map, position: { lat: o[0], lng: o[1] }, clickable: false, title: 'UACH Norte',
+          icon: { path: G.SymbolPath.CIRCLE, scale: 8, fillColor: '#28314D', fillOpacity: 1, strokeColor: '#FFFFFF', strokeWeight: 3, labelOrigin: new G.Point(0, -2.4) },
+          label: { text: 'UACH Norte', color: '#28314D', fontWeight: '800', fontSize: '12px' } });
+        map.addListener('click', function (ev) { self.setPoint(ev.latLng.lat(), ev.latLng.lng(), 'El punto que marcaste'); });
+        this._gm = true;
+      } else {
+        var L = window.L;
+        var map2 = this._map = L.map(el, { scrollWheelZoom: false }).setView(o, 12);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map2);
+        [10, 6, 3].forEach(function (km, i) {
+          L.circle(o, { radius: km * 1000, color: cols[2 - i], weight: 2, fillColor: cols[2 - i], fillOpacity: 0.18 }).addTo(map2);
+        });
+        L.circleMarker(o, { radius: 8, color: '#FFFFFF', weight: 3, fillColor: '#28314D', fillOpacity: 1 }).bindTooltip('UACH Norte', { permanent: true, direction: 'top', offset: [0, -8] }).addTo(map2);
+        map2.on('click', function (ev) { self.setPoint(ev.latlng.lat, ev.latlng.lng, 'El punto que marcaste'); });
+        this._gm = false;
+      }
     }
-    if (this._mapEl.parentNode !== slot) slot.appendChild(this._mapEl);
-    var L2 = window.L, p = this.state.point;
-    if (p) {
-      if (!this._pin) this._pin = L2.circleMarker([p[0], p[1]], { radius: 9, color: '#FFFFFF', weight: 3, fillColor: '#FF6B85', fillOpacity: 1 }).addTo(this._map);
-      else this._pin.setLatLng([p[0], p[1]]);
-      if (this._pinKey !== p[0] + ',' + p[1]) { this._pinKey = p[0] + ',' + p[1]; this._map.fitBounds(L2.latLngBounds([p[0], p[1]], this.geoOrigin()).pad(0.4), { maxZoom: 15 }); }
+    var fresh = this._mapEl.parentNode !== slot;
+    if (fresh) slot.appendChild(this._mapEl);
+    var p = this.state.point;
+    if (this._gm) {
+      var G2 = window.google.maps;
+      if (fresh) G2.event.trigger(this._map, 'resize');
+      if (p) {
+        var pos = { lat: p[0], lng: p[1] };
+        if (!this._pin) this._pin = new G2.Marker({ map: this._map, position: pos, clickable: false, icon: { path: G2.SymbolPath.CIRCLE, scale: 9, fillColor: '#FF6B85', fillOpacity: 1, strokeColor: '#FFFFFF', strokeWeight: 3 } });
+        else { this._pin.setMap(this._map); this._pin.setPosition(pos); }
+        if (this._pinKey !== p[0] + ',' + p[1]) {
+          this._pinKey = p[0] + ',' + p[1];
+          var bd = new G2.LatLngBounds(); bd.extend(pos); bd.extend({ lat: o[0], lng: o[1] });
+          this._map.fitBounds(bd, 40);
+          G2.event.addListenerOnce(this._map, 'idle', function () { if (self._map.getZoom() > 15) self._map.setZoom(15); });
+        }
+      }
+    } else {
+      var L2 = window.L;
+      if (p) {
+        if (!this._pin) this._pin = L2.circleMarker([p[0], p[1]], { radius: 9, color: '#FFFFFF', weight: 3, fillColor: '#FF6B85', fillOpacity: 1 }).addTo(this._map);
+        else this._pin.setLatLng([p[0], p[1]]);
+        if (this._pinKey !== p[0] + ',' + p[1]) { this._pinKey = p[0] + ',' + p[1]; this._map.fitBounds(L2.latLngBounds([p[0], p[1]], o).pad(0.4), { maxZoom: 15 }); }
+      }
+      this._map.invalidateSize();
     }
-    this._map.invalidateSize();
   }
   renderVals() {
     var self = this, st = this.state;
